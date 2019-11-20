@@ -1,0 +1,16 @@
+{
+  "name": "hidden-album",
+  "version": "1.0.0",
+  "description": "each user has their own hidden album only they can access, only they can comment, and leave a like on",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Chintan Patel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.4"
+  }
+}
