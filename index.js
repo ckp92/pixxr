@@ -3,26 +3,27 @@ const mysql = require("mysql");
 const keys = require("./config/keys");
 const dbConfig = require("./config/dbConfig");
 
-// const connection = mysql.createConnection(dbConfig.connection);
-// connection.connect(err => {
-//   if (err) {
-//     console.error("error connecting: " + err.stack);
-//     return;
-//   }
+const connection = mysql.createConnection(dbConfig.connection);
 
-//   console.log("connected as id " + connection.threadId);
-// });
+connection.connect(err => {
+  if (err) {
+    console.error("error connecting: " + err.stack);
+    return;
+  }
 
-// const queries = ["SHOW DATABASES", "SELECT DATABASE()", "SHOW TABLES"];
+  console.log("connected as id " + connection.threadId);
+});
 
-// queries.forEach(query =>
-//   connection.query(query, (err, results) => {
-//     if (err) throw err;
-//     console.log(results);
-//   })
-// );
+const queries = ["SHOW DATABASES", "SELECT DATABASE()", "SHOW TABLES"];
 
-// connection.end();
+queries.forEach(query =>
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.log(results);
+  })
+);
+
+connection.end();
 
 const app = express();
 
