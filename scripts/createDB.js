@@ -1,29 +1,27 @@
 // script to create database tables
-const mysql = require("mysql");
-const dbConfig = require("../config/dbConfig");
-const { users, photos, likes, comments, tags, photoTags } = dbConfig.tables;
-
-const connection = mysql.createConnection(dbConfig.connection);
-
-connection.connect(err => {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
-  }
-
-  console.log("connected as id " + connection.threadId);
-});
+const usePooledConnection = require("../services/mysql/usePooledConnection");
+const generalQuery = require("../services/mysql/generalQuery");
 
 const tables = [
   // users table
-  `CREATE TABLE ${users} (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
+  `CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   );`,
 
+  // local_account
+  `CREATE TABLE local_account (
+    local_id INT AUTO_INCREMENT PRIMARY KEY,
+    local_email VARCHAR(255) UNIQUE NOT NULL,
+    local_hash CHAR(60) NOT NULL,
+    local_user_id INT NOT NULL,
+    local_created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(local_user_id) REFERENCES users(id)
+  );`,
+
   // photos table
-  `CREATE TABLE ${photos} (
+  `CREATE TABLE photos (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     image_url VARCHAR(255) NOT NULL,
     user_id INTEGER NOT NULL,
@@ -32,7 +30,7 @@ const tables = [
   );`,
 
   // likes table
-  `CREATE TABLE ${likes} (
+  `CREATE TABLE likes (
     user_id INTEGER NOT NULL,
     photo_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
@@ -42,7 +40,7 @@ const tables = [
   );`,
 
   // comments table
-  `CREATE TABLE ${comments} (
+  `CREATE TABLE comments (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     comment_text VARCHAR(255) NOT NULL,
     photo_id INTEGER NOT NULL,
@@ -53,14 +51,14 @@ const tables = [
   );`,
 
   // tags table
-  `CREATE TABLE ${tags} (
+  `CREATE TABLE tags (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     tag_name VARCHAR(255) UNIQUE,
     created_at TIMESTAMP DEFAULT NOW()
   );`,
 
   // phptoTags table
-  `CREATE TABLE ${photoTags} (
+  `CREATE TABLE photo_tags (
     photo_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
     FOREIGN KEY(photo_id) REFERENCES photos(id),
@@ -69,12 +67,15 @@ const tables = [
   );`
 ];
 
-// create the tables
-tables.forEach(table =>
-  connection.query(table, (err, results, field) => {
-    if (err) throw err;
-    console.log(results);
-  })
-);
+const createTables = async () => {
+  for (let i = 0; i < 2; i++) {
+    try {
+      const okDataPacket = await usePooledConnection(generalQuery, tables[i]);
+      console.log(okDataPacket);
+    } catch (error) {
+      console.error(`Error with table ${i + 1}`, error);
+    }
+  }
+};
 
-connection.end();
+createTables();

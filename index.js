@@ -1,35 +1,44 @@
 const express = require("express");
 const mysql = require("mysql");
+const passport = require("passport");
+const bodyParser = require("body-parser");
+const cookieSession = require("cookie-session");
+const flash = require("connect-flash");
+
 const keys = require("./config/keys");
-const dbConfig = require("./config/dbConfig");
 
-// const connection = mysql.createConnection(dbConfig.connection);
-
-// connection.connect(err => {
-//   if (err) {
-//     console.error("error connecting: " + err.stack);
-//     return;
-//   }
-
-//   console.log("connected as id " + connection.threadId);
-// });
-
-// const queries = ["SHOW DATABASES", "SELECT DATABASE()", "SHOW TABLES"];
-
-// queries.forEach(query =>
-//   connection.query(query, (err, results) => {
-//     if (err) throw err;
-//     console.log(results);
-//   })
-// );
-
-// connection.end();
+require("./services/passport");
 
 const app = express();
+
+// APP CONFIG
+
+// bodyParser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// cookieSession
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    keys: [keys.cookieKey]
+  })
+);
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+// flash
+app.use(flash());
+
+// ROUTES
 
 app.get("/hello", (req, res) => {
   res.send({ hello: "world!" });
 });
+
+require("./routes/authRoutes")(app);
 
 // make express behave correctly in production environment
 if (process.env.NODE_ENV === "production") {
@@ -43,5 +52,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+// START SERVER
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Listening @ ${PORT}`));
