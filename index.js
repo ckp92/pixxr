@@ -27,8 +27,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-// tell express to trust the proxy
-app.enable("trust proxy");
+// // tell express to trust the proxy
+// app.enable("trust proxy");
 
 // ROUTES
 
