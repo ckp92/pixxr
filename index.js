@@ -1,9 +1,7 @@
 const express = require("express");
-const mysql = require("mysql");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
-const flash = require("connect-flash");
 
 const keys = require("./config/keys");
 
@@ -29,8 +27,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-// flash
-app.use(flash());
+// tell express to trust the proxy
+app.enable("trust proxy");
 
 // ROUTES
 
@@ -54,4 +52,6 @@ if (process.env.NODE_ENV === "production") {
 
 // START SERVER
 const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Listening @ ${PORT}`));
+
 app.listen(PORT, () => console.log(`Listening @ ${PORT}`));

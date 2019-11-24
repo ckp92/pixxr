@@ -40,14 +40,46 @@ module.exports = app => {
     })(req, res, next);
   });
 
+  // GOOGLE AUTH ROUTES -------------------------------------------------------------------------------------
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google"),
+    (req, res) => res.redirect("/docs")
+  );
+  // FACEBOOK AUTH ROUTES -------------------------------------------------------------------------------------
+  app.get(
+    "/auth/facebook",
+    passport.authenticate("facebook", { scope: ["email"] })
+  );
+
+  app.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook"),
+    (req, res) => {
+      console.log("callback invoked");
+      res.redirect("/docs");
+    }
+  );
+
   // LOGOUT ROUTE -------------------------------------------------------------------------------------------
   app.get("/api/logout", (req, res) => {
     req.logOut();
     console.log("Logged Out");
-    res.redirect("/landing");
+    res.send({ logged: "out" });
+    // res.redirect("/landing");
   });
 
   // USER DETAILS ROUTE -------------------------------------------------------------------------------------
+  app.get("/api/user", (req, res) => {
+    console.log(req.user);
+    res.send(req.user);
+  });
+
   app.get("/api/userdetails", async (req, res) => {
     console.log("req.user is: ", req.user);
 

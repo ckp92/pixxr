@@ -20,6 +20,19 @@ const tables = [
     FOREIGN KEY(local_user_id) REFERENCES users(id)
   );`,
 
+  // google_account
+  `CREATE TABLE google_account (
+    google_id INT AUTO_INCREMENT PRIMARY KEY,
+    google_profile_id VARCHAR(50) UNIQUE NOT NULL,
+    google_display_name VARCHAR(255),
+    google_given_name VARCHAR(255),
+    google_family_name VARCHAR(255),
+    google_email VARCHAR(255),
+    google_user_id INT NOT NULL,
+    google_created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(google_user_id) REFERENCES users(id)
+  );`,
+
   // photos table
   `CREATE TABLE photos (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -68,7 +81,7 @@ const tables = [
 ];
 
 const createTables = async () => {
-  for (let i = 0; i < 2; i++) {
+  for (let i = 2; i < 3; i++) {
     try {
       const okDataPacket = await usePooledConnection(generalQuery, tables[i]);
       console.log(okDataPacket);
@@ -78,4 +91,4 @@ const createTables = async () => {
   }
 };
 
-createTables();
+// createTables();

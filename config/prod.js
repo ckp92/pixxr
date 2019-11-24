@@ -3,5 +3,7 @@ module.exports = {
   rdsHost: process.env.RDS_HOST,
   rdsUser: process.env.RDS_USER,
   rdsPass: process.env.RDS_PASS,
-  rdsDB: process.env.RDS_DB
+  rdsDB: process.env.RDS_DB,
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
 };
