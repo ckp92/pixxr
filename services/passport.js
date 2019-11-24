@@ -333,6 +333,7 @@ passport.use(
       clientID: keys.facebookClientId,
       clientSecret: keys.facebookClientSecret,
       callbackURL: "/auth/facebook/callback",
+      profileFields: ["id", "username", "displayName", "name", "emails"],
       proxy: true
     },
     (accessToken, refreshToken, profile, cb) => {
