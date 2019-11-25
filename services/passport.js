@@ -29,108 +29,78 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// GLOBAL QUERY STRINGS ----------------------------------------------------------------------------------
-const findUserByEmailStr = `SELECT * FROM users
-INNER JOIN local_account
-ON users.id = local_account.local_user_id
-WHERE local_account.local_email = ?`;
+// GLOBAL VARIABLES --------------------------------------------------------------------------------------
+const findUserByUsernameStr = `SELECT * FROM users WHERE type = ? && username = ?`;
 
-const newUserQueryStr = "INSERT INTO users(type) VALUES(?)";
+const findUserByExternalIdStr = `SELECT * FROM users WHERE type = ? && external_id = ?`;
+
+const newNonLocalUserQueryStr =
+  "INSERT INTO users(type, external_id) VALUES(?, ?)";
+
+const accountTypeTwitter = "twitter";
 
 // LOCAL SIGNUP ------------------------------------------------------------------------------------------
 passport.use(
   "local-signup",
   new LocalStrategy(
     {
-      // override username with email
-      usernameField: "email",
-      passwordField: "password",
       proxy: true
     },
-    async (email, password, done) => {
-      if (email) email = email.toLowerCase();
+    async (username, password, done) => {
+      const type = "local";
+      if (username) username = username.toLowerCase();
 
-      let findUserRows = null;
-
-      // find user in db with that email
-      try {
-        findUserRows = await usePooledConnection(
-          generalQuery,
-          findUserByEmailStr,
-          [email]
-        );
-      } catch (error) {
-        console.error("Error checking if user already exists: ", error);
+      // find user in db with that username
+      const findUserRows = await usePooledConnection(
+        generalQuery,
+        findUserByUsernameStr,
+        [type, username]
+      ).catch(error => {
+        console.error("Error checking if local user already exists: ", error);
         return done(err);
-      }
+      });
 
-      // don't make new user if email already exists in db
+      // don't make new user if username already exists in db
       if (findUserRows.length) {
         console.log(
-          `A user with that email ('${email}') already exists in the db: ${findUserRows}`
+          `Local username already exists in db: ${findUserRows[0]}. Sending error message...`
         );
-        return done(null, false, { message: "Email already exists" });
+        return done(null, false, { message: "username already exists" });
       }
 
-      // continue and make new user if email doesn't already exist in db
+      // continue and make new user if username doesn't already exist in db
       console.log(
-        `Email doesn't already exist in db: ${findUserRows}. Making new user.`
+        `Local username ('${username}') doesn't already exist in db. Making new user...`
       );
 
-      const newUserArgs = ["local"];
-      let newUserOkPacket = null;
+      // build query str
+      const newLocalUserQueryStr =
+        "INSERT INTO users(type, username, hash) VALUES(?, ?, ?)";
+
+      // get hash of password
+      const hash = await createHash(password);
 
       // add new user to 'users'
-      try {
-        newUserOkPacket = await usePooledConnection(
-          generalQuery,
-          newUserQueryStr,
-          newUserArgs
-        );
-      } catch (error) {
-        console.error("Error adding new user to 'users': ", error);
+      const newUserOkPacket = await usePooledConnection(
+        generalQuery,
+        newLocalUserQueryStr,
+        [type, username, hash]
+      ).catch(error => {
+        console.error("Error adding new local user to 'users': ", error);
         return done(err);
-      }
+      });
 
       // new user successfully added to 'users'
       console.log("New user added successfully to 'users': ", newUserOkPacket);
 
-      // build (incomplete) newUserObj to be passed back with 'done()'
+      // build newUserObj to be passed back with 'done()'
       const newUser = {
         id: newUserOkPacket.insertId,
-        type: "local",
-        local_id: null,
-        local_email: email
+        type,
+        username,
+        hash,
+        external_id: null
       };
-
-      // get hash of password
-      const pass = await createHash(password);
-
-      const newLocalAccountQueryStr =
-        "INSERT INTO local_account(local_email, local_hash, local_user_id) VALUES (?, ?, ?)";
-      const newLocalAccountArgs = [email, pass, newUser.id];
-      let newLocalAccountOkPacket = null;
-
-      // add new user to 'local_account'
-      try {
-        newLocalAccountOkPacket = await usePooledConnection(
-          generalQuery,
-          newLocalAccountQueryStr,
-          newLocalAccountArgs
-        );
-      } catch (error) {
-        console.error("Error adding new user to 'local_account': ", error);
-        return done(err);
-      }
-
-      // new user successfully added to 'local_account'
-      console.log(
-        "New user added successfully to 'local_account': ",
-        newLocalAccountOkPacket
-      );
-
-      // complete newUserObj
-      newUser.local_id = newLocalAccountOkPacket.insertId;
 
       // return
       return done(null, newUser);
@@ -143,39 +113,40 @@ passport.use(
   "local-login",
   new LocalStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
       proxy: true
     },
-    async (email, password, done) => {
-      let findUserRows = null;
+    async (username, password, done) => {
+      const type = "local";
+      if (username) username = username.toLowerCase();
 
       // find user in the db
-      try {
-        findUserRows = await usePooledConnection(
-          generalQuery,
-          findUserByEmailStr,
-          [email]
+      const findUserRows = await usePooledConnection(
+        generalQuery,
+        findUserByUsernameStr,
+        [type, username]
+      ).catch(error => {
+        console.error(
+          `Error finding local user ('${username}') in database: `,
+          error
         );
-      } catch (error) {
-        console.error(`Error finding user ('${email}') in database: `, error);
         return done(err);
-      }
+      });
 
       // no user found in db
       if (!findUserRows.length) {
-        console.log(`Account ('${email}') doesn't exist`);
+        console.log(
+          `Local username ('${username}') doesn't exist in db. Sending error message...`
+        );
         return done(null, false, { message: "Account doesn't exist" });
       }
 
       // user found in db
-      console.log(`User ('${email}') found`);
+      console.log(
+        `Local username ('${username}') found in db. Checking pass...`
+      );
 
       // compare passwords
-      const passwordFeedback = await checkPass(
-        password,
-        findUserRows[0].local_hash
-      );
+      const passwordFeedback = await checkPass(password, findUserRows[0].hash);
       console.log("passwordFeedback: ", passwordFeedback);
 
       switch (passwordFeedback) {
@@ -185,7 +156,7 @@ passport.use(
           return done(null, false, { message: passwordFeedback });
         // correct pass
         default:
-          console.log("pass correct. logging in");
+          console.log("Pass correct. Logging in...");
           return done(null, findUserRows[0]);
       }
     }
@@ -193,16 +164,6 @@ passport.use(
 );
 
 // GOOGLE --------------------------------------------------------------------------------------------------
-//  {
-//  id: '110894088504084209184',
-//  displayName: 'Chintan Patel',
-//  name: { familyName: 'Patel', givenName: 'Chintan' },
-//  emails: [ { value: 'cpatel818@gmail.com', verified: true } ],
-//  photos: [
-//    {
-//      value: 'https://lh3.googleusercontent.com/-QKYQh8HbfN0/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdAhpmtAXdCJEaRDuPDQ9H4JjTq9A/photo.jpg'
-//    }
-//  ],
 passport.use(
   new GoogleStrategy(
     {
@@ -212,113 +173,54 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const findGoogleUserStr = `SELECT * FROM users
-        INNER JOIN google_account
-        ON users.id = google_account.google_user_id
-        WHERE google_account.google_profile_id = ?`;
-
-      let findUserRows = null;
-
-      const {
-        id,
-        displayName,
-        name: { familyName, givenName },
-        emails
-      } = profile;
+      const { id } = profile;
+      const type = "google";
 
       // find user in db with that googleID
-      try {
-        findUserRows = await usePooledConnection(
-          generalQuery,
-          findGoogleUserStr,
-          [profile.id]
-        );
-      } catch (error) {
-        console.error("Error checking if user already exists: ", error);
+      const findUserRows = await usePooledConnection(
+        generalQuery,
+        findUserByExternalIdStr,
+        [type, id]
+      ).catch(error => {
+        console.error("Error checking if Google user already exists: ", error);
         return done(err);
-      }
+      });
 
       // break out of callback and proceed forwards if googleID already exists in db
       if (findUserRows.length) {
-        console.log(
-          `A user with that googleID ('${profile.id}') found in db: ${findUserRows}`
-        );
+        console.log(`GoogleID found in db: ${findUserRows[0]} Logging in...`);
         return done(null, findUserRows[0]);
       }
 
       // continue and make new user if googleID doesn't already exist in db
       console.log(
-        `GoogleID doesn't already exist in db: ${findUserRows}. Making new user.`
+        `GoogleID ('${id}') doesn't already exist in db. Making new user....`
       );
-
-      const newUserArgs = ["google"];
-      let newUserOkPacket = null;
 
       // add new user to 'users'
-      try {
-        newUserOkPacket = await usePooledConnection(
-          generalQuery,
-          newUserQueryStr,
-          newUserArgs
-        );
-      } catch (error) {
-        console.error("Error adding new user to 'users': ", error);
+      const newUserOkPacket = await usePooledConnection(
+        generalQuery,
+        newNonLocalUserQueryStr,
+        [type, id]
+      ).catch(error => {
+        console.error("Error adding new Google user to 'users': ", error);
         return done(err);
-      }
+      });
 
       // new user successfully added to 'users'
-      console.log("New user added successfully to 'users': ", newUserOkPacket);
-
-      // build (incomplete) newUserObj to be passed back with 'done()'
-      const newUser = {
-        id: newUserOkPacket.insertId,
-        type: "google",
-        google_id: null,
-        google_profile_id: id,
-        google_display_name: displayName,
-        google_given_name: givenName,
-        google_family_name: familyName,
-        google_email: emails[0].value
-      };
-
-      const newGoogleAccountQueryStr = `INSERT INTO google_account(
-          google_profile_id,
-          google_display_name,
-          google_given_name,
-          google_family_name,
-          google_email,
-          google_user_id
-        ) VALUES (?, ?, ?, ?, ?, ?)`;
-      const newGoogleAccountArgs = [
-        id,
-        displayName,
-        givenName,
-        familyName,
-        emails[0].value,
-        newUserOkPacket.insertId
-      ];
-      let newGoogleAccountOkPacket = null;
-
-      // add new user to 'google_account'
-      try {
-        newGoogleAccountOkPacket = await usePooledConnection(
-          generalQuery,
-          newGoogleAccountQueryStr,
-          newGoogleAccountArgs
-        );
-      } catch (error) {
-        console.error("Error adding new user to 'google_account': ", error);
-        return done(err);
-      }
-
-      // new user successfully added to 'google_account'
       console.log(
-        "New user added successfully to 'google_account': ",
-        newGoogleAccountOkPacket
+        "New Google user added successfully to 'users': ",
+        newUserOkPacket
       );
 
-      // complete newUserObj
-      newUser.google_id = newGoogleAccountOkPacket.insertId;
+      // build newUserObj to be passed back with 'done()'
+      const newUser = {
+        id: newUserOkPacket.insertId,
+        type,
+        username: null,
+        hash: null,
+        external_id: id
+      };
 
       // return
       return done(null, newUser);
@@ -333,12 +235,63 @@ passport.use(
       clientID: keys.facebookClientId,
       clientSecret: keys.facebookClientSecret,
       callbackURL: "/auth/facebook/callback",
-      profileFields: ["id", "displayName", "name", "email"],
       proxy: true
     },
-    (accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
-      return cb(null, false);
+    async (accessToken, refreshToken, profile, done) => {
+      const { id } = profile;
+      const type = "facebook";
+
+      // find user in db with that facebookID
+      const findUserRows = await usePooledConnection(
+        generalQuery,
+        findUserByExternalIdStr,
+        [type, id]
+      ).catch(error => {
+        console.error(
+          "Error checking if Facebook user already exists: ",
+          error
+        );
+        return done(err);
+      });
+
+      // break out of callback and proceed forwards if facebookID already exists in db
+      if (findUserRows.length) {
+        console.log(`FacebookID found in db: ${findUserRows[0]} Logging in...`);
+        return done(null, findUserRows[0]);
+      }
+
+      // continue and make new user if facebookID doesn't already exist in db
+      console.log(
+        `FacebookID ('${id}') doesn't already exist in db. Making new user....`
+      );
+
+      // add new user to 'users'
+      const newUserOkPacket = await usePooledConnection(
+        generalQuery,
+        newNonLocalUserQueryStr,
+        [type, id]
+      ).catch(error => {
+        console.error("Error adding new Facebook user to 'users': ", error);
+        return done(err);
+      });
+
+      // new user successfully added to 'users'
+      console.log(
+        "New Facebook user added successfully to 'users': ",
+        newUserOkPacket
+      );
+
+      // build newUserObj to be passed back with 'done()'
+      const newUser = {
+        id: newUserOkPacket.insertId,
+        type,
+        username: null,
+        hash: null,
+        external_id: id
+      };
+
+      // return
+      return done(null, newUser);
     }
   )
 );

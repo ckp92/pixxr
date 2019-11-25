@@ -2,6 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
+const morgan = require("morgan");
 
 const keys = require("./config/keys");
 
@@ -9,7 +10,7 @@ require("./services/passport");
 
 const app = express();
 
-// APP CONFIG
+// APP CONFIG ------------------------------------------------------------------------------------------
 
 // bodyParser
 app.use(bodyParser.json());
@@ -28,14 +29,19 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // // tell express to trust the proxy
-// app.enable("trust proxy");
+app.enable("trust proxy");
 
-// ROUTES
+// log requests
+app.use(morgan("combined"));
 
+// ROUTES -----------------------------------------------------------------------------------------------
+
+// testing - DELETE AFTER
 app.get("/hello", (req, res) => {
   res.send({ hello: "world!" });
 });
 
+// auth
 require("./routes/authRoutes")(app);
 
 // make express behave correctly in production environment
@@ -50,8 +56,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// START SERVER
+// START SERVER ------------------------------------------------------------------------------------------
 const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Listening @ ${PORT}`));
-
 app.listen(PORT, () => console.log(`Listening @ ${PORT}`));
