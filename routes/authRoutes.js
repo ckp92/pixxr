@@ -47,6 +47,7 @@ module.exports = app => {
       }
     }
   );
+
   // FACEBOOK AUTH ROUTES -------------------------------------------------------------------------------------
   // if username is null (they just signed up), show a modal where they must provide one;
   app.get("/auth/facebook", passport.authenticate("facebook"));
@@ -54,6 +55,22 @@ module.exports = app => {
   app.get(
     "/auth/facebook/callback",
     passport.authenticate("facebook"),
+    (req, res) => {
+      if (req.user.username) {
+        res.redirect("/photos");
+      } else {
+        res.redirect("/docs");
+      }
+    }
+  );
+
+  // TWITTER AUTH ROUTES -------------------------------------------------------------------------------------
+  // if username is null (they just signed up), show a modal where they must provide one;
+  app.get("/auth/twitter", passport.authenticate("twitter"));
+
+  app.get(
+    "/auth/twitter/callback",
+    passport.authenticate("twitter"),
     (req, res) => {
       if (req.user.username) {
         res.redirect("/photos");

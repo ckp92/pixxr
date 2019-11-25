@@ -2,6 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
+const TwitterStrategy = require("passport-twitter").Strategy;
 
 const keys = require("../config/keys");
 const usePooledConnection = require("./mysql/usePooledConnection"); // optional args must be array
@@ -278,6 +279,71 @@ passport.use(
       // new user successfully added to 'users'
       console.log(
         "New Facebook user added successfully to 'users': ",
+        newUserOkPacket
+      );
+
+      // build newUserObj to be passed back with 'done()'
+      const newUser = {
+        id: newUserOkPacket.insertId,
+        type,
+        username: null,
+        hash: null,
+        external_id: id
+      };
+
+      // return
+      return done(null, newUser);
+    }
+  )
+);
+
+// TWITTER -----------------------------------------------------------------------------------------------
+passport.use(
+  new TwitterStrategy(
+    {
+      consumerKey: keys.twitterClientId,
+      consumerSecret: keys.twitterClientSecret,
+      callbackURL: "/auth/twitter/callback",
+      proxy: true
+    },
+    async (token, tokenSecret, profile, done) => {
+      const { id } = profile;
+      const type = "twitter";
+
+      // find user in db with that twitterID
+      const findUserRows = await usePooledConnection(
+        generalQuery,
+        findUserByExternalIdStr,
+        [type, id]
+      ).catch(error => {
+        console.error("Error checking if Twitter user already exists: ", error);
+        return done(err);
+      });
+
+      // break out of callback and proceed forwards if twitterID already exists in db
+      if (findUserRows.length) {
+        console.log(`TwitterID found in db: ${findUserRows[0]} Logging in...`);
+        return done(null, findUserRows[0]);
+      }
+
+      // continue and make new user if twitterID doesn't already exist in db
+      console.log(
+        `TwitterID ('${id}') doesn't already exist in db. Making new user....`
+      );
+
+      // add new user to 'users'
+      const newUserOkPacket = await usePooledConnection(
+        generalQuery,
+        newNonLocalUserQueryStr,
+        [type, id]
+      ).catch(error => {
+        console.error("Error adding new Twitter user to 'users': ", error);
+        return done(err);
+      });
+
+      // new user successfully added to 'users'
+      console.log(
+        "New Twitter user added successfully to 'users': ",
         newUserOkPacket
       );
 
