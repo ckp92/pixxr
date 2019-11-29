@@ -1,0 +1,20 @@
+.landing-form-content {
+  height: 100%;
+}
+
+.landing-form-content form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-form-content .form-fields {
+  height: 75%;
+  padding: 5% 0 0 0;
+}
+
+.landing-form-content button {
+  height: 20%;
+  width: 70%;
+  align-self: center;
+}

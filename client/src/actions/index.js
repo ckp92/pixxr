@@ -1,0 +1,166 @@
+import {
+  TOGGLE_LANDING,
+  UNIQUE_USERNAME,
+  SIGNUP_MODE,
+  LOGIN,
+  SIGNUP,
+  GET_USER,
+  SET_USERNAME,
+  CLEAR_SET_USERNAME,
+  CHECK_ALPHANUMERIC
+} from "./types";
+
+export const toggleLanding = value => {
+  return { type: TOGGLE_LANDING, payload: value };
+};
+
+// will check to see if username is unique
+export const checkUniqueUsername = username => async dispatch => {
+  let payload = null;
+
+  // will only run if username is truthy
+  // this means a payload of 'null' will be returned if user types a username and then deletes it all. Good for clean-up because it will make username validator msg disappear in this situation, instead of hanging there
+  if (username) {
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username })
+    };
+
+    try {
+      const res = await fetch("/api/find_username", options);
+
+      // will be returned an array, either empty or not
+      const data = await res.json();
+
+      if (data.length) payload = false; // username is not unique
+      if (!data.length) payload = true; // username is unique
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  dispatch({ type: UNIQUE_USERNAME, payload });
+};
+
+// will be either 'login' or 'signup' depending on what user selects
+export const toggleSignupMode = value => {
+  return { type: SIGNUP_MODE, payload: value };
+};
+
+// login
+export const login = (formValues, history) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...formValues })
+  };
+
+  try {
+    const res = await fetch("/auth/login", options);
+    data = await res.json();
+
+    console.log("data returned from login: ", data);
+  } catch (error) {
+    console.error(error);
+    data = { message: "fetchLoginError" };
+  }
+
+  dispatch({ type: LOGIN, payload: data });
+
+  // redirect user if login successful
+  if (data.id) history.push("/photos");
+};
+
+// signup
+export const signup = (formValues, history) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...formValues })
+  };
+
+  try {
+    const res = await fetch("/auth/signup", options);
+    data = await res.json();
+
+    console.log("data returned from signup: ", data);
+  } catch (error) {
+    console.error(error);
+    data = { message: "fetchSignupError" };
+  }
+
+  dispatch({ type: SIGNUP, payload: data });
+
+  // redirect user if signup successful and user is logged in
+  if (data.id) history.push("/photos");
+};
+
+// get user
+export const getUser = () => async dispatch => {
+  let data = null;
+
+  try {
+    const res = await fetch("/api/user");
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+  }
+
+  // fetch doesn't accept empty response. If response is empty (undefined), error will get caught by 'catch' block and 'data' will remain as null
+
+  dispatch({ type: GET_USER, payload: data });
+};
+
+// set username
+export const setUsername = (values, history) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(values)
+  };
+
+  // will return true if success
+  try {
+    const res = await fetch("/api/set_username", options);
+    data = await res.json();
+    console.log(data);
+    data = data.changedRows === 1 ? true : false;
+  } catch (error) {
+    console.error(error);
+    data = false;
+  }
+
+  console.log(data);
+
+  dispatch({ type: SET_USERNAME, payload: data });
+
+  if (data) history.push("/");
+};
+
+// clear setUsername reducer to 'null'
+export const clearSetUsername = () => {
+  return { type: CLEAR_SET_USERNAME, payload: null };
+};
+
+// checks to see if username entered is alphanumeric
+export const checkAlphanumeric = username => {
+  // alphanumeric test
+  const alphaNumeric = /^[a-zA-Z0-9]*$/;
+  const result = alphaNumeric.test(username);
+
+  return { type: CHECK_ALPHANUMERIC, payload: result };
+  // error.username = "Must contain only letters and numbers";
+};
+
+// clear alphanumeric
+export const clearAlphanumeric = () => {
+  console.log("clearing");
+  return { type: CHECK_ALPHANUMERIC, payload: null };
+};

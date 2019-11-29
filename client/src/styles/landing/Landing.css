@@ -1,0 +1,95 @@
+.landing-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing {
+  height: 500px;
+  width: 400px;
+}
+
+.landing h2 {
+  margin: 0;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-nav {
+  height: 10%;
+  display: flex;
+}
+
+.landing-form {
+  height: 50%;
+}
+
+.landing-nav button {
+  background-color: white;
+  border: none;
+  outline: none;
+}
+
+.landing-nav button:hover {
+  font-weight: bolder;
+}
+
+#selected {
+  border-bottom: 2px solid #00264d;
+  font-weight: bold;
+}
+
+.external-login-options {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.external-login-options a {
+  width: 70%;
+  margin-bottom: 3px;
+  border-width: 2px;
+  border-style: solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+.alternate-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.external-login-options .google {
+  border-color: #de5246;
+  color: #de5246;
+}
+.external-login-options .facebook {
+  border-color: #3b5998;
+  color: #3b5998;
+}
+.external-login-options .twitter {
+  border-color: #00acee;
+  color: #00acee;
+}
+
+@media (max-width: 640px) {
+  .landing-container {
+    align-items: flex-start;
+  }
+}
+
+@media (max-height: 540px) {
+  .landing-container {
+    align-items: flex-start;
+  }
+}

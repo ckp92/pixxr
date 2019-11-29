@@ -1,0 +1,25 @@
+.generic-button {
+  border-width: 2px;
+  border-style: solid;
+  outline: none;
+  background-color: white;
+  font-weight: bolder;
+}
+
+.generic {
+  border-color: #00264d;
+  color: #00264d;
+}
+
+.red {
+  border-color: red;
+  color: red;
+}
+.blue {
+  border-color: blue;
+  color: blue;
+}
+.green {
+  border-color: green;
+  color: green;
+}

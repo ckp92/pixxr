@@ -1,4 +1,7 @@
 const passport = require("passport");
+const usePooledConnection = require("../services/mysql/usePooledConnection");
+const generalQuery = require("../services/mysql/generalQuery");
+const removeSensitiveData = require("../services/removeSensitiveData");
 
 module.exports = app => {
   // LOCAL SIGNUP ROUTE ------------------------------------------------------------------------------
@@ -10,13 +13,17 @@ module.exports = app => {
       // log the user in
       req.logIn(user, async e => {
         if (e) return next(e);
-        return res.redirect("/photos");
+
+        // remove hash, esternal_id properties
+        const withoutSensitiveData = removeSensitiveData(user);
+        return res.send(withoutSensitiveData);
       });
     })(req, res, next);
   });
 
   // LOCAL LOGIN ROUTE -------------------------------------------------------------------------------
   app.post("/auth/login", (req, res, next) => {
+    console.log(req.body);
     passport.authenticate("local-login", (e, user, info) => {
       if (e) return next(e);
       if (info) return res.send(info); // err message, if exists
@@ -24,7 +31,10 @@ module.exports = app => {
       // log the user in
       req.logIn(user, e => {
         if (e) return next(e);
-        return res.redirect("/photos");
+
+        // remove hash, esternal_id properties
+        const withoutSensitiveData = removeSensitiveData(user);
+        return res.send(withoutSensitiveData);
       });
     })(req, res, next);
   });
@@ -40,11 +50,7 @@ module.exports = app => {
     "/auth/google/callback",
     passport.authenticate("google"),
     (req, res) => {
-      if (req.user.username) {
-        res.redirect("/photos");
-      } else {
-        res.redirect("/docs");
-      }
+      res.redirect("/photos");
     }
   );
 
@@ -56,11 +62,7 @@ module.exports = app => {
     "/auth/facebook/callback",
     passport.authenticate("facebook"),
     (req, res) => {
-      if (req.user.username) {
-        res.redirect("/photos");
-      } else {
-        res.redirect("/docs");
-      }
+      res.redirect("/photos");
     }
   );
 
@@ -72,11 +74,7 @@ module.exports = app => {
     "/auth/twitter/callback",
     passport.authenticate("twitter"),
     (req, res) => {
-      if (req.user.username) {
-        res.redirect("/photos");
-      } else {
-        res.redirect("/docs");
-      }
+      res.redirect("/photos");
     }
   );
 
@@ -85,12 +83,46 @@ module.exports = app => {
     req.logOut();
     console.log("Logged Out");
     res.send({ logged: "out" }); // only while app is still in development
-    // res.redirect("/landing"); // uncomment once auth is all working properly
+    // res.redirect("/"); // uncomment once auth is all working properly
   });
 
-  // USER DETAILS ROUTE -------------------------------------------------------------------------------------
+  // USER DETAILS ROUTES -------------------------------------------------------------------------------------
+
+  // get user (if logged in)
   app.get("/api/user", (req, res) => {
     console.log(req.user);
-    res.send(req.user);
+
+    // remove hash, esternal_id properties
+    const withoutSensitiveData = removeSensitiveData(req.user);
+    res.send(withoutSensitiveData);
+  });
+
+  // get user by username (if exists)
+  app.post("/api/find_username", async (req, res) => {
+    const { username } = req.body;
+
+    const queryStr = `SELECT * FROM users WHERE username = ?`;
+
+    const findUserRows = await usePooledConnection(generalQuery, queryStr, [
+      username
+    ]);
+
+    res.send(findUserRows);
+  });
+
+  // add username
+  app.post("/api/set_username", async (req, res) => {
+    const { username, id } = req.body;
+
+    // console.log("body", req.body);
+
+    const queryStr = `UPDATE users SET username = ? WHERE id = ?`;
+
+    const okDataPacket = await usePooledConnection(generalQuery, queryStr, [
+      username,
+      id
+    ]);
+
+    res.send(okDataPacket);
   });
 };
