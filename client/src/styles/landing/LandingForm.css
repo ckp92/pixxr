@@ -1,14 +1,17 @@
 .landing-form-content {
   height: 100%;
+  width: 100%;
 }
 
 .landing-form-content form {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .landing-form-content .form-fields {
+  width: 100%;
   height: 75%;
   padding: 5% 0 0 0;
 }

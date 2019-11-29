@@ -9,7 +9,7 @@ class Header extends Component {
     const { auth, wasUsernameSuccessfullySet } = this.props;
 
     // only display if user is logged in, has no username (and wasUsernameSuccessfullySet is false - this will make modal disappear on successful submission with no errors)
-    if (auth && !auth.username && !wasUsernameSuccessfullySet) {
+    if (auth && auth.id && !auth.username && !wasUsernameSuccessfullySet) {
       console.log(auth.username);
       return <MakeUsername />;
     }
@@ -17,9 +17,9 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="header">
+      <div className="header-container">
         {this.renderModal()}
-        Header
+        <div className="header">Header</div>
       </div>
     );
   }

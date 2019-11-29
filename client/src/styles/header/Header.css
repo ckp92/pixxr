@@ -1,4 +1,7 @@
+.header-container {
+  height: 100px;
+}
 .header {
   border: 1px solid black;
-  height: 10%;
+  height: 30%;
 }

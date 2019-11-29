@@ -1,4 +1,15 @@
+#make-username-form {
+  width: 100%;
+}
+#make-username-btn {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  height: 90%;
+  width: 100%;
+}
+
 #make-username-field {
-  /* border: 1px solid black; */
   height: 50%;
+  width: 100%;
 }

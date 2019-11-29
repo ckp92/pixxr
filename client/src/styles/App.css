@@ -1,23 +1,21 @@
 * {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
-  height: 100%;
-  width: 100%;
+  color: #00264d;
 }
 
 body {
   margin: 0;
-  color: #00264d;
   height: 100%;
   width: 100%;
-  position: fixed;
+}
+
+.container {
+  height: 100%;
 }
 
 button {
   cursor: pointer;
-}
-
-#modal {
 }
 
 @media (max-width: 640px) {

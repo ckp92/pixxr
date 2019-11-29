@@ -151,16 +151,13 @@ export const clearSetUsername = () => {
 
 // checks to see if username entered is alphanumeric
 export const checkAlphanumeric = username => {
-  // alphanumeric test
   const alphaNumeric = /^[a-zA-Z0-9]*$/;
   const result = alphaNumeric.test(username);
 
   return { type: CHECK_ALPHANUMERIC, payload: result };
-  // error.username = "Must contain only letters and numbers";
 };
 
 // clear alphanumeric
 export const clearAlphanumeric = () => {
-  console.log("clearing");
   return { type: CHECK_ALPHANUMERIC, payload: null };
 };

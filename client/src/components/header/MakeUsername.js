@@ -30,6 +30,7 @@ class MakeUsername extends Component {
     const header = <h3>First Pick A Username</h3>;
     const actions = (
       <GenericButton
+        id="make-username-btn"
         text="Submit"
         type="submit"
         color="generic"
@@ -75,7 +76,7 @@ class MakeUsername extends Component {
     };
 
     return (
-      <form onSubmit={handleSubmit(this.onFormSubmit)}>
+      <form id="make-username-form" onSubmit={handleSubmit(this.onFormSubmit)}>
         <Field
           ids={ids}
           type="text"
@@ -165,7 +166,7 @@ class MakeUsername extends Component {
   };
 
   render() {
-    return this.renderModal();
+    return <div className="make-username">{this.renderModal()}</div>;
   }
 }
 

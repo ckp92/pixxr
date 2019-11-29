@@ -3,12 +3,12 @@ import React, { Component } from "react";
 
 class GenericButton extends Component {
   renderButton = () => {
-    const { color, type, onButtonClick, text } = this.props;
+    const { color, type, onButtonClick, text, id } = this.props;
 
     const className = `generic-button ${color}`;
 
     return (
-      <button className={className} type={type} onClick={onButtonClick}>
+      <button id={id} className={className} type={type} onClick={onButtonClick}>
         {text}
       </button>
     );
