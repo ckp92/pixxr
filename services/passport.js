@@ -49,7 +49,8 @@ passport.use(
     },
     async (username, password, done) => {
       const type = "local";
-      if (username) username = username.toLowerCase();
+
+      //NOTE: we want username to be saved in the db case-sensitive (exactly as the user wrote), but each username must be case-insensitively unique names. MySQL username search will be case insensitive
 
       // find user in db with that username
       const findUserRows = await usePooledConnection(
@@ -118,7 +119,6 @@ passport.use(
     },
     async (username, password, done) => {
       const type = "local";
-      if (username) username = username.toLowerCase();
 
       // find user in the db
       const findUserRows = await usePooledConnection(
