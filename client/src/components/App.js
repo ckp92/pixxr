@@ -2,7 +2,7 @@ import "../styles/App.css";
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import { getUser, brandDropdownClick } from "../actions";
+import { getUser } from "../actions";
 
 import Header from "./header/Header";
 import Landing from "./landing/Landing";
