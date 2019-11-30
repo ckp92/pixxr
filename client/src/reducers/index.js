@@ -6,6 +6,8 @@ import signupModeReducer from "./signupModeReducer";
 import authReducer from "./authReducer";
 import setUsernameReducer from "./setUsernameReducer";
 import checkAlphanumericReducer from "./checkAlphanumericReducer";
+import brandDropdownReducer from "./brandDropdownReducer";
+import menuDropdownReducer from "./menuDropdownReducer";
 
 export default combineReducers({
   landingOn: landingReducer,
@@ -14,5 +16,7 @@ export default combineReducers({
   auth: authReducer,
   wasUsernameSuccessfullySet: setUsernameReducer,
   isAlphanumeric: checkAlphanumericReducer,
+  isBrandDropdownOn: brandDropdownReducer,
+  isMenuDropdownOn: menuDropdownReducer,
   form: formReducer
 });

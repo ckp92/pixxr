@@ -7,7 +7,9 @@ import {
   GET_USER,
   SET_USERNAME,
   CLEAR_SET_USERNAME,
-  CHECK_ALPHANUMERIC
+  CHECK_ALPHANUMERIC,
+  BRAND_DROPDOWN_CLICK,
+  MENU_DROPDOWN_CLICK
 } from "./types";
 
 export const toggleLanding = value => {
@@ -160,4 +162,14 @@ export const checkAlphanumeric = username => {
 // clear alphanumeric
 export const clearAlphanumeric = () => {
   return { type: CHECK_ALPHANUMERIC, payload: null };
+};
+
+// toggle brand dropdown on/off
+export const brandDropdownClick = value => {
+  return { type: BRAND_DROPDOWN_CLICK, payload: value };
+};
+
+// toggle menu dropdown on/off
+export const menuDropdownClick = value => {
+  return { type: MENU_DROPDOWN_CLICK, payload: value };
 };

@@ -25,7 +25,7 @@ module.exports = async (asyncAction, queryStr, args = null) => {
 
 // USEAGE ------------------------------------------------------------------------------------------
 
-// create the query function
+// USEAGE create the query function
 const queryFunction = async (connection, queryStr, args) => {
   const rows = await new Promise((resolve, reject) => {
     connection.query(queryStr, args, (err, rows) => {
@@ -39,9 +39,9 @@ const queryFunction = async (connection, queryStr, args) => {
   });
 };
 
-// NO EXTRA ARGS -----------------------------------------------------------------------------------------
+// USEAGE NO EXTRA ARGS -----------------------------------------------------------------------------------------
 
-// use the pooled connection and pass it queryFunction and the queryStr
+// USEAGE use the pooled connection and pass it queryFunction and the queryStr
 const doSomething = async queryStr => {
   const result = await usePooledConnection(queryFunction, queryStr);
   console.log(result);
@@ -54,7 +54,7 @@ const queryStr = "SELECT * FROM USERS";
 
 // USEAGE ARGS -----------------------------------------------------------------------------------------
 
-// use pooled function and pass it queryFunction, queryStr2, args
+// USEAGE use pooled function and pass it queryFunction, queryStr2, args
 const doSomethingElse = async (queryStr, args) => {
   const result = await usePooledConnection(queryFunction, queryStr, args);
   console.log(result);

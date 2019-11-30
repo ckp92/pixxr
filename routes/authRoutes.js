@@ -81,7 +81,7 @@ module.exports = app => {
   app.get("/api/logout", requireLogin, (req, res) => {
     req.logOut();
     console.log("Logged Out");
-    res.send({ logged: "out" }); // only while app is still in development
-    // res.redirect("/"); // uncomment once auth is all working properly
+    // res.send({ logged: "out" }); // only while app is still in development
+    res.redirect("/"); // uncomment once auth is all working properly
   });
 };
