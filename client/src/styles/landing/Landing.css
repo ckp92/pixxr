@@ -96,7 +96,7 @@
 @media (max-width: 640px) {
   .landing-container {
     align-items: flex-start;
-    padding-top: 20px;
+    padding: 20px 15px 0 15px;
   }
 
   .landing {
@@ -107,5 +107,6 @@
 @media (max-height: 540px) {
   .landing-container {
     align-items: flex-start;
+    padding-top: 15px;
   }
 }

@@ -1,9 +1,14 @@
 import "../../styles/photos/Photos.css";
 import React, { Component } from "react";
+import Shell from "../Shell";
 
 class Photos extends Component {
   render() {
-    return <div className="photos">Photos</div>;
+    return (
+      <Shell>
+        <div className="photos">Photos</div>
+      </Shell>
+    );
   }
 }
 

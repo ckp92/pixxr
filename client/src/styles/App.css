@@ -19,15 +19,3 @@ body {
 button {
   cursor: pointer;
 }
-
-@media (max-width: 640px) {
-  body {
-    padding: 0 15px;
-  }
-}
-
-@media (max-height: 540px) {
-  body {
-    padding: 15px 0;
-  }
-}
