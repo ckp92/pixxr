@@ -76,7 +76,7 @@
 
 @media (max-width: 640px) {
   .header {
-    font-size: small;
+    font-size: medium;
   }
   .header-top {
     padding: 0;
