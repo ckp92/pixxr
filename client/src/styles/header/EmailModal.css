@@ -1,0 +1,16 @@
+#email-modal .modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#email-modal .modal-actions {
+  display: flex;
+  justify-content: center;
+}
+
+#email-modal-btn {
+  min-width: 100px;
+}
+
+/* modal, modal-inner, modal-header, modal-content, modal-actions */

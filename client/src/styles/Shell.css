@@ -1,6 +1,4 @@
 .shell {
-  /* background-color: red; */
-  /* border: 1px solid black; */
   max-width: 1200px;
   padding: 20px;
   margin: 0 auto;
@@ -8,16 +6,15 @@
 
 @media (max-width: 640px) {
   .shell {
-    padding: 0 15px;
+    padding: 15px 15px 0 15px;
     width: 100%;
     margin: 0;
-    border: 1px solid black;
   }
 }
 
 @media (max-height: 540px) {
   .shell {
-    padding: 15px 0;
+    padding: 15px 15px 0 15px;
     width: 100%;
   }
 }

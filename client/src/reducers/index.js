@@ -8,6 +8,8 @@ import setUsernameReducer from "./setUsernameReducer";
 import checkAlphanumericReducer from "./checkAlphanumericReducer";
 import brandDropdownReducer from "./brandDropdownReducer";
 import menuDropdownReducer from "./menuDropdownReducer";
+import formReviewReducer from "./formReviewReducer";
+import emailReducer from "./emailReducer";
 
 export default combineReducers({
   landingOn: landingReducer,
@@ -18,5 +20,7 @@ export default combineReducers({
   isAlphanumeric: checkAlphanumericReducer,
   isBrandDropdownOn: brandDropdownReducer,
   isMenuDropdownOn: menuDropdownReducer,
+  isFormReviewOn: formReviewReducer,
+  emailStatus: emailReducer,
   form: formReducer
 });

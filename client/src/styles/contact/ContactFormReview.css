@@ -1,0 +1,14 @@
+.review-field p {
+  /* border: 1px solid black; */
+  height: 20px;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.form-buttons-inner {
+  /* border: 1px solid black; */
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}

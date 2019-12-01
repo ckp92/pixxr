@@ -1,0 +1,49 @@
+.form-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-header {
+  width: 100%;
+  text-align: center;
+}
+
+.form-header h1 {
+  margin: 5px 0;
+}
+
+.form-header p {
+  margin: 10px 0;
+}
+
+.form-content {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.form-content .form {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.form-content .form .form-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.form-content .form .generic-button {
+  height: 50px;
+  min-width: 100px;
+}
+
+.form-footer {
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .form-content {
+    width: 100%;
+  }
+}

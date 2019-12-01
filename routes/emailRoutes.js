@@ -33,9 +33,10 @@ module.exports = app => {
       .send(data)
       .catch(err => {
         console.error(err);
-        res
-          .status(400)
-          .send({ error: err, message: "Email could not be sent" });
+        res.status(400).send({
+          error: err,
+          message: "There was an error. Please try again"
+        });
       });
 
     // log mailgun response
@@ -55,11 +56,10 @@ module.exports = app => {
       args
     ).catch(error => {
       console.error("Error saving new CONTACT MESSAGE to db:", error);
-      res.send({ error: err, message: "Couldn't save email to db" });
     });
 
     console.log(messageOkPacket);
 
-    res.send({ success: "success" });
+    res.send({ success: "success", message: "Message sent successfully" });
   });
 };

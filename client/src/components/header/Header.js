@@ -1,12 +1,13 @@
 import "../../styles/header/Header.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { brandDropdownClick, menuDropdownClick } from "../../actions";
 import { MENU_OPTIONS, BRAND_DROPDOWN_OPTIONS } from "./options";
 import MakeUsername from "./MakeUsername";
 import MenuButton from "./MenuButton";
 import Dropdown from "./Dropdown";
+import EmailModal from "./EmailModal";
 
 class Header extends Component {
   onHeaderClick = () => {
@@ -22,6 +23,7 @@ class Header extends Component {
     if (isMenuDropdownOn) menuDropdownClick(false);
   };
 
+  // render username modal (for external logins)
   renderModal = () => {
     const { auth, wasUsernameSuccessfullySet } = this.props;
 
@@ -29,6 +31,15 @@ class Header extends Component {
     if (auth && auth.id && !auth.username && !wasUsernameSuccessfullySet) {
       console.log(auth.username);
       return <MakeUsername />;
+    }
+  };
+
+  // render email feedback modal
+  renderEmailModal = () => {
+    const { emailStatus } = this.props;
+
+    if (emailStatus) {
+      return <EmailModal />;
     }
   };
 
@@ -87,6 +98,7 @@ class Header extends Component {
       // container includes make username modal from Landing.js
       <div className="header-container" onClick={this.onHeaderClick}>
         {this.renderModal()}
+        {this.renderEmailModal()}
         {/* ACTUAL HEADER STARTS HERE */}
         <nav className="header">
           <div className="header-top">
@@ -129,13 +141,15 @@ const mapStateToProps = ({
   auth,
   wasUsernameSuccessfullySet,
   isBrandDropdownOn,
-  isMenuDropdownOn
+  isMenuDropdownOn,
+  emailStatus
 }) => {
   return {
     auth,
     wasUsernameSuccessfullySet,
     isBrandDropdownOn,
-    isMenuDropdownOn
+    isMenuDropdownOn,
+    emailStatus
   };
 };
 

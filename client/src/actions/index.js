@@ -9,7 +9,10 @@ import {
   CLEAR_SET_USERNAME,
   CHECK_ALPHANUMERIC,
   BRAND_DROPDOWN_CLICK,
-  MENU_DROPDOWN_CLICK
+  MENU_DROPDOWN_CLICK,
+  TOGGLE_FORM_REVIEW,
+  SEND_EMAIL,
+  CLOSE_EMAIL_MODAL
 } from "./types";
 
 export const toggleLanding = value => {
@@ -172,4 +175,37 @@ export const brandDropdownClick = value => {
 // toggle menu dropdown on/off
 export const menuDropdownClick = value => {
   return { type: MENU_DROPDOWN_CLICK, payload: value };
+};
+
+// toggle formReview mode
+export const toggleFormReview = value => {
+  return { type: TOGGLE_FORM_REVIEW, payload: value };
+};
+
+// send contact email
+export const sendEmail = (values, history) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(values)
+  };
+
+  try {
+    const res = await fetch("/api/contact", options);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = { error, message: "There was an error. Please try again" };
+  }
+
+  history.push("/");
+
+  dispatch({ type: SEND_EMAIL, payload: data });
+};
+
+// close email feedback modal
+export const closeEmailModal = () => {
+  return { type: CLOSE_EMAIL_MODAL };
 };
