@@ -9,5 +9,7 @@ module.exports = {
   facebookClientId: process.env.FACEBOOK_CLIENT_ID,
   facebookClientSecret: process.env.FACEBOOK_CLIENT_SECRET,
   twitterClientId: process.env.TWITTER_CLIENT_ID,
-  twitterClientSecret: process.env.TWITTER_CLIENT_SECRET
+  twitterClientSecret: process.env.TWITTER_CLIENT_SECRET,
+  mailgunAPI: process.env.MAILGUN_API,
+  mailgunDomain: process.env.MAILGUN_DOMAIN
 };

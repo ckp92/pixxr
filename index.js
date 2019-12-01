@@ -45,6 +45,8 @@ app.get("/hello", (req, res) => {
 require("./routes/authRoutes")(app);
 // user
 require("./routes/userRoutes")(app);
+// email
+require("./routes/emailRoutes")(app);
 
 // make express behave correctly in production environment
 if (process.env.NODE_ENV === "production") {

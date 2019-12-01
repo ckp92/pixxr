@@ -3,13 +3,6 @@ const usePooledConnection = require("../services/mysql/usePooledConnection");
 const generalQuery = require("../services/mysql/generalQuery");
 
 const tables = [
-  // // users table
-  // `CREATE TABLE users (
-  //   id INT AUTO_INCREMENT PRIMARY KEY,
-  //   type VARCHAR(20) NOT NULL,
-  //   created_at TIMESTAMP DEFAULT NOW()
-  // );`,
-
   // users table
   `CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,28 +13,16 @@ const tables = [
     created_at TIMESTAMP DEFAULT NOW()
   );`,
 
-  // // local_account
-  // `CREATE TABLE local_account (
-  //   local_id INT AUTO_INCREMENT PRIMARY KEY,
-  //   local_email VARCHAR(255) UNIQUE NOT NULL,
-  //   local_hash CHAR(60) NOT NULL,
-  //   local_user_id INT NOT NULL,
-  //   local_created_at TIMESTAMP DEFAULT NOW(),
-  //   FOREIGN KEY(local_user_id) REFERENCES users(id)
-  // );`,
-
-  // // google_account
-  // `CREATE TABLE google_account (
-  //   google_id INT AUTO_INCREMENT PRIMARY KEY,
-  //   google_profile_id VARCHAR(50) UNIQUE NOT NULL,
-  //   google_display_name VARCHAR(255),
-  //   google_given_name VARCHAR(255),
-  //   google_family_name VARCHAR(255),
-  //   google_email VARCHAR(255),
-  //   google_user_id INT NOT NULL,
-  //   google_created_at TIMESTAMP DEFAULT NOW(),
-  //   FOREIGN KEY(google_user_id) REFERENCES users(id)
-  // );`,
+  // contact messages
+  `CREATE TABLE contact_messages (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    return_email VARCHAR(255) NOT NULL,
+    message_body TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    successfully_delivered BOOLEAN,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+  );`,
 
   // photos table
   `CREATE TABLE photos (
@@ -65,7 +46,7 @@ const tables = [
   // comments table
   `CREATE TABLE comments (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    comment_text VARCHAR(255) NOT NULL,
+    comment_text TEXT NOT NULL,
     photo_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
