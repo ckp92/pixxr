@@ -15,6 +15,8 @@ import {
   CLOSE_EMAIL_MODAL
 } from "./types";
 
+import alphanumericTest from "../utils/alphanumericTest";
+
 export const toggleLanding = value => {
   return { type: TOGGLE_LANDING, payload: value };
 };
@@ -156,8 +158,7 @@ export const clearSetUsername = () => {
 
 // checks to see if username entered is alphanumeric
 export const checkAlphanumeric = username => {
-  const alphaNumeric = /^[a-zA-Z0-9]*$/;
-  const result = alphaNumeric.test(username);
+  const result = alphanumericTest(username);
 
   return { type: CHECK_ALPHANUMERIC, payload: result };
 };

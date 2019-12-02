@@ -1,6 +1,6 @@
 import "../styles/App.css";
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../actions";
 
@@ -9,7 +9,13 @@ import Landing from "./landing/Landing";
 import Docs from "./docs/Docs";
 import CV from "./cv/CV";
 import Contact from "./contact/Contact";
-import Photos from "./photos/Photos";
+import Photos from "./photos/Photos"; // delete?
+
+import PhotoCreate from "./photos/PhotoCreate";
+import PhotoDelete from "./photos/PhotoDelete";
+import PhotoEdit from "./photos/PhotoEdit";
+import PhotoList from "./photos/PhotoList";
+import PhotoShow from "./photos/PhotoShow";
 
 class App extends Component {
   componentDidMount = () => {
@@ -32,12 +38,21 @@ class App extends Component {
       return (
         // these components are only visible if logged in
         <div>
-          <Route path="/" exact component={Photos} />
-          {/* might not need /photos after */}
-          <Route path="/photos" exact component={Photos} />
-          <Route path="/docs" exact component={Docs} />
-          <Route path="/cv" exact component={CV} />
-          <Route path="/contact" exact component={Contact} />
+          <Switch>
+            {/* RESTFUL ROUTES */}
+            <Route path="/" exact component={PhotoList} />
+            {/* might not need /photos after */}
+            <Route path="/photos" exact component={PhotoList} />
+            <Route path="/photos/new" exact component={PhotoCreate} />
+            <Route path="/photos/edit/:id" exact component={PhotoEdit} />
+            <Route path="/photos/delete/:id" exact component={PhotoDelete} />
+            <Route path="/photos/:id" exact component={PhotoShow} />
+
+            {/* OTHER ROUTES */}
+            <Route path="/docs" exact component={Docs} />
+            <Route path="/cv" exact component={CV} />
+            <Route path="/contact" exact component={Contact} />
+          </Switch>
         </div>
       );
     }

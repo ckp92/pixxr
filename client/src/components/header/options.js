@@ -33,7 +33,7 @@ export const BRAND_DROPDOWN_OPTIONS = [
 export const MENU_OPTIONS = [
   {
     type: "link",
-    path: "/photos",
+    path: "/photos/new",
     icon: "fas fa-plus fa-sm",
     content: "Add Photo"
   },
