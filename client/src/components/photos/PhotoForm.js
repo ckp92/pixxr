@@ -24,6 +24,7 @@ class PhotoForm extends Component {
     });
   };
 
+  // change to link?
   onClickBack = formValues => {
     const { history } = this.props;
     console.log("onClickBack values", formValues);

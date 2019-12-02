@@ -47,6 +47,8 @@ require("./routes/authRoutes")(app);
 require("./routes/userRoutes")(app);
 // email
 require("./routes/emailRoutes")(app);
+// photos
+require("./routes/photoRoutes")(app);
 
 // make express behave correctly in production environment
 if (process.env.NODE_ENV === "production") {

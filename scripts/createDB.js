@@ -62,7 +62,7 @@ const tables = [
     created_at TIMESTAMP DEFAULT NOW()
   );`,
 
-  // phptoTags table
+  // photoTags table
   `CREATE TABLE photo_tags (
     photo_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
@@ -84,3 +84,16 @@ const createTables = async () => {
 };
 
 // createTables();
+
+const insertTagStr = `INSERT IGNORE INTO tags (tag_name) VALUES(?)`;
+
+const insertTag = async () => {
+  console.log("inserting");
+  const okDataPacket = await usePooledConnection(generalQuery, insertTagStr, [
+    "food"
+  ]).catch(e => console.error(e));
+
+  console.log(okDataPacket);
+};
+
+// insertTag();
