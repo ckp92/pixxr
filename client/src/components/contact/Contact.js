@@ -39,25 +39,29 @@ class Contact extends Component {
     }
   };
 
+  renderFooter = () => {
+    return (
+      <p>
+        Alternatively you can send an email to{" "}
+        <a
+          href="mailto:cpatel818@gmail.com?Subject=RE:%20Hidden%20Album"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          cpatel818@gmail.com
+        </a>
+      </p>
+    );
+  };
+
   render() {
     return (
       <div className="contact">
-        <Shell>
-          <div className="shell-header">{this.renderHeader()}</div>
-          <div className="shell-content">{this.renderContent()}</div>
-          <div className="shell-footer">
-            <p>
-              Alternatively you can send an email to{" "}
-              <a
-                href="mailto:cpatel818@gmail.com?Subject=RE:%20Hidden%20Album"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                cpatel818@gmail.com
-              </a>
-            </p>
-          </div>
-        </Shell>
+        <Shell
+          header={this.renderHeader()}
+          content={this.renderContent()}
+          footer={this.renderFooter()}
+        />
       </div>
     );
   }
