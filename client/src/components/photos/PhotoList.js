@@ -1,9 +1,14 @@
 import "../../styles/photos/PhotoList.css";
 import React, { Component } from "react";
+import Shell from "../Shell";
 
 class PhotoList extends Component {
   render() {
-    return <div className="photo-list">PhotoList!</div>;
+    return (
+      <Shell>
+        <div className="photo-list">PhotoList!</div>
+      </Shell>
+    );
   }
 }
 

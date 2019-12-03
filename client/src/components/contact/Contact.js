@@ -4,7 +4,6 @@ import Shell from "../Shell";
 import { connect } from "react-redux";
 import { toggleFormReview } from "../../actions";
 import { reduxForm } from "redux-form";
-import FormShell from "../FormShell";
 import ContactForm from "./ContactForm";
 import ContactFormReview from "./ContactFormReview";
 
@@ -42,26 +41,24 @@ class Contact extends Component {
 
   render() {
     return (
-      <Shell>
-        <div className="contact">
-          <FormShell>
-            <div className="form-header">{this.renderHeader()}</div>
-            <div className="form-content">{this.renderContent()}</div>
-            <div className="form-footer">
-              <p>
-                Alternatively you can send an email to{" "}
-                <a
-                  href="mailto:cpatel818@gmail.com?Subject=RE:%20Hidden%20Album"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  cpatel818@gmail.com
-                </a>
-              </p>
-            </div>
-          </FormShell>
-        </div>
-      </Shell>
+      <div className="contact">
+        <Shell>
+          <div className="shell-header">{this.renderHeader()}</div>
+          <div className="shell-content">{this.renderContent()}</div>
+          <div className="shell-footer">
+            <p>
+              Alternatively you can send an email to{" "}
+              <a
+                href="mailto:cpatel818@gmail.com?Subject=RE:%20Hidden%20Album"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                cpatel818@gmail.com
+              </a>
+            </p>
+          </div>
+        </Shell>
+      </div>
     );
   }
 }

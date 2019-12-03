@@ -2,6 +2,47 @@
   max-width: 1200px;
   padding: 20px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shell-header {
+  width: 100%;
+  text-align: center;
+}
+
+.shell-header h1 {
+  margin: 5px 0;
+}
+
+.shell-header p {
+  margin: 10px 0;
+}
+
+.shell-content {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.shell-content .form {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.shell-content .form .form-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.shell-content .form .generic-button {
+  height: 50px;
+  min-width: 100px;
+}
+
+.shell-footer {
+  width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 640px) {
@@ -9,6 +50,10 @@
     padding: 15px 15px 0 15px;
     width: 100%;
     margin: 0;
+  }
+
+  .shell-content {
+    width: 100%;
   }
 }
 
