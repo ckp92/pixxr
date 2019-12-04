@@ -12,7 +12,10 @@ import {
   MENU_DROPDOWN_CLICK,
   TOGGLE_FORM_REVIEW,
   SEND_EMAIL,
-  CLOSE_EMAIL_MODAL
+  CLOSE_EMAIL_MODAL,
+  GET_PHOTOS,
+  GET_PHOTO,
+  TOGGLE_LIKE
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -209,4 +212,74 @@ export const sendEmail = (values, history) => async dispatch => {
 // close email feedback modal
 export const closeEmailModal = () => {
   return { type: CLOSE_EMAIL_MODAL };
+};
+
+// Get photos from db
+export const getPhotos = (page, userId = null) => async dispatch => {
+  let data = null;
+  const userIdQuery = userId !== null ? `&userId=${userId}` : "";
+  try {
+    const res = await fetch(`/api/photos?page=${page}${userIdQuery}`);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error fetching the photos. Please try again.",
+      data: null
+    };
+  }
+
+  dispatch({ type: GET_PHOTOS, payload: data });
+};
+
+// will get a single photo
+export const getPhoto = id => async dispatch => {
+  let data = null;
+
+  try {
+    const res = await fetch(`/api/photos/${id}}`);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error fetching the photo. Please try again.",
+      data: null
+    };
+  }
+
+  dispatch({ type: GET_PHOTO, payload: data });
+};
+
+// will toggle like or unlike on click
+export const toggleLike = async (
+  value,
+  userId,
+  type,
+  page = null
+) => async dispatch => {
+  let data = null;
+
+  const body = { value, userId, type, page };
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(body)
+  };
+
+  try {
+    const res = await fetch("/api/photo/toggle_like");
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error. Please try again.",
+      data: null
+    };
+  }
+
+  dispatch({ type: TOGGLE_LIKE, payload: data });
 };

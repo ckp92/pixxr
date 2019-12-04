@@ -1,8 +1,15 @@
 import "../../styles/photos/PhotoList.css";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { getPhotos } from "../../actions/index";
+import PhotoCard from "./PhotoCard";
 import Shell from "../Shell";
 
 class PhotoList extends Component {
+  componentDidMount = () => {
+    this.props.getPhotos(0);
+  };
+
   renderHeader = () => {
     return (
       <React.Fragment>
@@ -12,7 +19,27 @@ class PhotoList extends Component {
     );
   };
 
-  renderContent = () => {};
+  renderContent = () => {
+    // loading
+    if (!this.props.photos) return <p>Loading...</p>;
+
+    const {
+      photos: { error, message, data }
+    } = this.props;
+
+    // error msg
+    if (error || !data.length) return <p>Oops! {message}</p>;
+
+    // success
+    return data.map(photo => (
+      <PhotoCard
+        key={photo.id}
+        {...photo}
+        type="multi"
+        onClick={() => this.props.history.push(`/photos/${photo.id}`)}
+      />
+    ));
+  };
 
   renderFooter = () => {
     return (
@@ -29,10 +56,15 @@ class PhotoList extends Component {
           header={this.renderHeader()}
           content={this.renderContent()}
           footer={this.renderFooter()}
+          type="normal"
         />
       </div>
     );
   }
 }
 
-export default PhotoList;
+const mapStateToProps = ({ photos }) => {
+  return { photos };
+};
+
+export default connect(mapStateToProps, { getPhotos })(PhotoList);

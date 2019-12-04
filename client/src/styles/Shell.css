@@ -1,5 +1,5 @@
 .shell {
-  max-width: 1200px;
+  max-width: 1400px;
   padding: 20px;
   margin: 0 auto;
   display: flex;
@@ -20,22 +20,37 @@
   margin: 10px 0;
 }
 
-.shell-content {
-  width: 50%;
+.shell-content-full {
+  /* border: 1px solid black; */
+  width: 100%;
   margin-bottom: 20px;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.shell-content .form {
+.shell-content-form {
+  /* border: 1px solid black; */
+  width: 50%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shell-content-form .form {
   width: 100%;
   padding-top: 10px;
 }
 
-.shell-content .form .form-buttons {
+.shell-content-form .form .form-buttons {
   display: flex;
   justify-content: center;
 }
 
-.shell-content .form .generic-button {
+.shell-content-form .form .generic-button {
   height: 50px;
   min-width: 100px;
 }
@@ -52,7 +67,11 @@
     margin: 0;
   }
 
-  .shell-content {
+  .shell-content-full {
+    flex-direction: column;
+  }
+
+  .shell-content-form {
     width: 100%;
   }
 }

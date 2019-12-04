@@ -29,6 +29,7 @@ class PhotoCreate extends Component {
           header={this.renderHeader()}
           content={<PhotoForm />}
           footer={this.renderFooter()}
+          type="form"
         />
       </div>
     );

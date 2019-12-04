@@ -61,6 +61,7 @@ class Contact extends Component {
           header={this.renderHeader()}
           content={this.renderContent()}
           footer={this.renderFooter()}
+          type="form"
         />
       </div>
     );

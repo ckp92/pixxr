@@ -1,8 +1,10 @@
 const usePooledConnection = require("../mysql/usePooledConnection");
 const generalQuery = require("../mysql/generalQuery");
+const checkHaveILiked = require("./checkHaveILiked");
+const getUserById = require("./getUserById");
 
-module.exports = async (page, userId = null) => {
-  const limit = 5;
+module.exports = async (page, currentUserId, userId = null) => {
+  const limit = 20;
   let getPhotosQueryStr = `SELECT * FROM photos 
     ORDER BY created_at DESC 
     LIMIT ? 
@@ -31,27 +33,33 @@ module.exports = async (page, userId = null) => {
       status: 500,
       error,
       message: "There was an error fetching the photos. Please try again.",
-      data: null
+      data: []
     };
   });
 
-  // get the tags for each
+  // get the various properties for each
   const data = await Promise.all(
     rows.map(async row => {
-      // get tagNames
-      const getTagsQueryStr = `SELECT tag_name FROM tags 
-        INNER JOIN photo_tags 
-        ON tags.id = photo_tags.tag_id 
+      // get usernames
+      const user = await getUserById(row.user_id);
+      const { username } = user;
+
+      // get numTags
+      const getNumTagsStr = `SELECT 
+        COUNT(*) AS num_tags
+        FROM tags
+        INNER JOIN photo_tags
+        ON tags.id = photo_tags.tag_id
         WHERE photo_id = ?`;
 
-      const tags = await usePooledConnection(generalQuery, getTagsQueryStr, [
-        row.id
-      ]).catch(error => {
+      const numTagsRows = await usePooledConnection(
+        generalQuery,
+        getNumTagsStr,
+        [row.id]
+      ).catch(error => {
         console.error(error);
-        return [];
+        return [{ num_tags: 0 }];
       });
-
-      const tagNames = tags.map(tag => tag.tag_name);
 
       // get numLikes
       const getNumLikesStr = `SELECT 
@@ -67,8 +75,11 @@ module.exports = async (page, userId = null) => {
         [row.id]
       ).catch(error => {
         console.error(error);
-        return null;
+        return [{ num_likes: 0 }];
       });
+
+      // find out if current user has liked it
+      const haveILiked = await checkHaveILiked(currentUserId, row.id);
 
       // get numComments
       // double check this str
@@ -85,23 +96,34 @@ module.exports = async (page, userId = null) => {
         [row.id]
       ).catch(error => {
         console.error(error);
-        return null;
+        return [{ num_comments: 0 }];
       });
 
       return {
         ...row,
-        tagNames,
+        username,
+        numTags: numTagsRows[0].num_tags,
         numLikes: numLikesRows[0].num_likes,
+        haveILiked,
         numComments: numCommentsRows[0].num_comments
       };
     })
   );
 
-  // return obj
-  return {
-    status: 200,
-    error: false,
-    message: "Success!",
-    data
-  };
+  // return obj depending on whether we managed to get photos from db
+  if (data.length) {
+    return {
+      status: 200,
+      error: false,
+      message: "Success!",
+      data
+    };
+  } else {
+    return {
+      status: 204,
+      error: false,
+      message: "There's no photos here!",
+      data: []
+    };
+  }
 };

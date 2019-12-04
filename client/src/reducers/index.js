@@ -10,6 +10,7 @@ import brandDropdownReducer from "./brandDropdownReducer";
 import menuDropdownReducer from "./menuDropdownReducer";
 import formReviewReducer from "./formReviewReducer";
 import emailReducer from "./emailReducer";
+import photosReducer from "./photosReducer";
 
 export default combineReducers({
   landingOn: landingReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   isMenuDropdownOn: menuDropdownReducer,
   isFormReviewOn: formReviewReducer,
   emailStatus: emailReducer,
+  photos: photosReducer,
   form: formReducer
 });

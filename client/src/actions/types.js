@@ -25,3 +25,11 @@ export const TOGGLE_FORM_REVIEW = "TOGGLE_FORM_REVIEW";
 export const SEND_EMAIL = "SEND_EMAIL";
 
 export const CLOSE_EMAIL_MODAL = "CLOSE_EMAIL_MODAL";
+
+export const GET_PHOTOS = "GET_PHOTOS";
+
+export const ADD_PHOTO = "ADD_PHOTO";
+
+export const GET_PHOTO = "GET_PHOTO";
+
+export const TOGGLE_LIKE = "TOGGLE_LIKE";

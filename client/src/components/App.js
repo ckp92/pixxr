@@ -9,7 +9,6 @@ import Landing from "./landing/Landing";
 import Docs from "./docs/Docs";
 import CV from "./cv/CV";
 import Contact from "./contact/Contact";
-import Photos from "./photos/Photos"; // delete?
 
 import PhotoCreate from "./photos/PhotoCreate";
 import PhotoDelete from "./photos/PhotoDelete";

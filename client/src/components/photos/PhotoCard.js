@@ -1,0 +1,69 @@
+import "../../styles/photos/PhotoCard.css";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import LikesCounter from "../accessories/LikesCounter";
+import ConfigButtons from "../accessories/ConfigButtons";
+
+class PhotoCard extends Component {
+  onHeartClick = () => {
+    const { haveILiked } = this.props;
+  };
+
+  renderConfig = () => {
+    const {
+      auth: { id },
+      user_id
+    } = this.props;
+
+    if (id === user_id) {
+      return <ConfigButtons />;
+    }
+  };
+
+  render() {
+    console.log(this.props);
+    const {
+      image_url,
+      numComments,
+      haveILiked,
+      numLikes,
+      numTags,
+      title,
+      username,
+      onClick,
+      type
+    } = this.props;
+    return (
+      <div className="photo-card" onClick={onClick}>
+        <div className="card-top">
+          <img src={image_url} alt={title} />
+        </div>
+        <div className="card-bottom">
+          <h4>
+            {title} by {username}
+          </h4>
+          <div className="stats">
+            <div className="left-stats">
+              {" "}
+              <LikesCounter
+                numLikes={numLikes}
+                haveILiked={haveILiked}
+                onHeartClick={this.onHeartClick}
+                type={type}
+              />{" "}
+              <i className="far fa-comment" /> {numComments}{" "}
+              <i className="fas fa-hashtag" /> {numTags}
+            </div>
+            {this.renderConfig()}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = ({ auth }) => {
+  return { auth };
+};
+
+export default connect(mapStateToProps, {})(PhotoCard);
