@@ -84,14 +84,16 @@ module.exports = async (id, currentUserId) => {
     return [];
   });
 
-  const data = {
-    ...photoRows[0],
-    username,
-    tags,
-    likes,
-    haveILiked,
-    comments: commentsRows
-  };
+  const data = [
+    {
+      ...photoRows[0],
+      username,
+      tags,
+      likes,
+      haveILiked,
+      comments: commentsRows
+    }
+  ];
 
   return {
     status: 200,

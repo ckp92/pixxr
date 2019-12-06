@@ -6,6 +6,32 @@ import ConfigButtons from "../accessories/ConfigButtons";
 import UnderLineButton from "../accessories/UnderlineButton";
 
 class PhotoCardFull extends Component {
+  renderContent = () => {
+    const { image_url, haveILiked, title, likes, username, type } = this.props;
+
+    // do error checking
+    return (
+      <React.Fragment>
+        <div className="card-full-top">
+          <img src={image_url} alt={title} />
+        </div>
+        <div className="card-full-bottom">
+          <div className="stats-full">
+            <LikesCounter
+              likes={likes}
+              haveILiked={haveILiked}
+              onHeartClick={this.onHeartClick}
+              type={type}
+            />
+            <div className="config-buttons">{this.renderConfig()}</div>
+          </div>
+          <div className="tags">{this.renderTags()}</div>
+          <div className="comments">{this.renderComments()}</div>
+        </div>
+      </React.Fragment>
+    );
+  };
+
   onHeartClick = () => {
     const { haveILiked } = this.props;
   };
@@ -35,28 +61,8 @@ class PhotoCardFull extends Component {
   };
 
   render() {
-    console.log(this.props);
-    const { image_url, haveILiked, title, likes, username, type } = this.props;
-    return (
-      <div className="photo-card-full">
-        <div className="card-full-top">
-          <img src={image_url} alt={title} />
-        </div>
-        <div className="card-full-bottom">
-          <div className="stats-full">
-            <LikesCounter
-              likes={likes}
-              haveILiked={haveILiked}
-              onHeartClick={this.onHeartClick}
-              type={type}
-            />
-            <div className="config-buttons">{this.renderConfig()}</div>
-          </div>
-          <div className="tags">{this.renderTags()}</div>
-          <div className="comments">{this.renderComments()}</div>
-        </div>
-      </div>
-    );
+    console.log("photocardfull props: ", this.props);
+    return <div className="photo-card-full">{this.renderContent()}</div>;
   }
 }
 

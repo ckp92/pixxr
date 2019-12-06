@@ -23,17 +23,21 @@ class PhotoShow extends Component {
     // loading
     if (!this.props.photos) return <p>Loading...</p>;
 
+    // only destructure after we know it exists
     const {
       photos: { error, message, data }
     } = this.props;
 
+    if (data.length !== 1) return <p>Loading...</p>;
+
     console.log(this.props.photos);
+    console.log("data: ", data);
 
     // error msg
-    if (error || !data.id) return <p>Oops! {message}</p>;
+    if (error || !data[0].id) return <p>Oops! {message}</p>;
 
     // success
-    return <PhotoCardFull {...data} type="single" />;
+    return <PhotoCardFull {...data[0]} type="single" />;
   };
 
   renderFooter = () => {};

@@ -1,12 +1,15 @@
 import "../../styles/photos/PhotoCard.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import LikesCounter from "../accessories/LikesCounter";
 import ConfigButtons from "../accessories/ConfigButtons";
 
 class PhotoCard extends Component {
-  onHeartClick = () => {
-    const { haveILiked } = this.props;
+  onClick = () => {
+    const { history, id } = this.props;
+
+    history.push(`/photos/${id}`);
   };
 
   renderConfig = () => {
@@ -30,11 +33,10 @@ class PhotoCard extends Component {
       numTags,
       title,
       username,
-      onClick,
       type
     } = this.props;
     return (
-      <div className="photo-card" onClick={onClick}>
+      <div className="photo-card" onClick={this.onClick}>
         <div className="card-top">
           <img src={image_url} alt={title} />
         </div>
@@ -66,4 +68,4 @@ const mapStateToProps = ({ auth }) => {
   return { auth };
 };
 
-export default connect(mapStateToProps, {})(PhotoCard);
+export default connect(mapStateToProps, {})(withRouter(PhotoCard));

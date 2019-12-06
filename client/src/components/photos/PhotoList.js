@@ -32,12 +32,7 @@ class PhotoList extends Component {
 
     // success
     return data.map(photo => (
-      <PhotoCard
-        key={photo.id}
-        {...photo}
-        type="multi"
-        onClick={() => this.props.history.push(`/photos/${photo.id}`)}
-      />
+      <PhotoCard key={photo.id} {...photo} type="multi" />
     ));
   };
 
