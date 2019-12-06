@@ -24,7 +24,6 @@ class PhotoCard extends Component {
   };
 
   render() {
-    console.log(this.props);
     const {
       image_url,
       numComments,
@@ -33,7 +32,8 @@ class PhotoCard extends Component {
       numTags,
       title,
       username,
-      type
+      type,
+      id
     } = this.props;
     return (
       <div className="photo-card" onClick={this.onClick}>
@@ -48,9 +48,9 @@ class PhotoCard extends Component {
             <div className="left-stats">
               {" "}
               <LikesCounter
+                photoId={id}
                 numLikes={numLikes}
                 haveILiked={haveILiked}
-                onHeartClick={this.onHeartClick}
                 type={type}
               />{" "}
               <i className="far fa-comment" /> {numComments}{" "}

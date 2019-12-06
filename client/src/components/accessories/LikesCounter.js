@@ -1,10 +1,23 @@
 import "../../styles/accessories/LikesCounter.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toggleLike } from "../../actions";
 import ZoomButton from "./ZoomButton";
 import UnderlineButton from "./UnderlineButton";
 
 class LikesCounter extends Component {
+  onHeartClick = e => {
+    e.stopPropagation();
+    const { haveILiked, toggleLike, type, photoId } = this.props;
+
+    // if already liked, clicking will pass 'false' to unlike
+    if (haveILiked) {
+      toggleLike(photoId, false, type);
+    } else {
+      toggleLike(photoId, true, type);
+    }
+  };
+
   renderIcon = () => {
     const { haveILiked } = this.props;
 
@@ -40,7 +53,10 @@ class LikesCounter extends Component {
   render() {
     return (
       <div className="likes-counter">
-        <ZoomButton content={<i className={this.renderIcon()} />} />
+        <ZoomButton
+          onClick={e => this.onHeartClick(e)}
+          content={<i className={this.renderIcon()} />}
+        />
         {this.renderLikes()}
       </div>
     );
@@ -51,6 +67,6 @@ const mapStateToProps = ({ photos }) => {
   return { photos };
 };
 
-export default connect(mapStateToProps, {})(LikesCounter);
+export default connect(mapStateToProps, { toggleLike })(LikesCounter);
 
 // add onlcick to icon btn

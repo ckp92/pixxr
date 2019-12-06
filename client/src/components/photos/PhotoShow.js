@@ -30,9 +30,6 @@ class PhotoShow extends Component {
 
     if (data.length !== 1) return <p>Loading...</p>;
 
-    console.log(this.props.photos);
-    console.log("data: ", data);
-
     // error msg
     if (error || !data[0].id) return <p>Oops! {message}</p>;
 
@@ -43,7 +40,6 @@ class PhotoShow extends Component {
   renderFooter = () => {};
 
   render() {
-    console.log(this.props);
     return (
       <div className="photo-show">
         <Shell

@@ -5,7 +5,6 @@ class Shell extends Component {
   renderClassName = () => {
     const { type } = this.props;
 
-    console.log(type);
     if (type === "normal") return "shell-content-full";
     if (type === "form") return "shell-content-form";
   };

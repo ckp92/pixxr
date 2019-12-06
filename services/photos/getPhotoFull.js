@@ -9,7 +9,7 @@ module.exports = async (id, currentUserId) => {
   const photoRows = await usePooledConnection(generalQuery, getPhotoStr, [
     id
   ]).catch(error => {
-    console.log(error);
+    console.error(error);
     return {
       status: 500,
       error,

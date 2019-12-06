@@ -1,8 +1,8 @@
-const usePooledConnection = require("../services/mysql/usePooledConnection");
-const generalQuery = require("../services/mysql/generalQuery");
 const addPhoto = require("../services/photos/addPhoto");
 const getPhotos = require("../services/photos/getPhotos");
-const getPhoto = require("../services/photos/getPhoto");
+const getPhotoMin = require("../services/photos/getPhotoMin");
+const getPhotoFull = require("../services/photos/getPhotoFull");
+const toggleLike = require("../services/photos/toggleLike");
 
 module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
@@ -25,18 +25,35 @@ module.exports = app => {
     res.status(status).send({ error, message });
   });
 
-  // GET SINGLE PHOTO ROUTE
+  // GET SINGLE PHOTO ROUTE -----------------------------------------------------------------------------------
   app.get("/api/photos/:id", async (req, res) => {
     const { id } = req.params;
 
-    const response = await getPhoto(id, req.user.id);
+    const response = await getPhotoFull(id, req.user.id);
+    const { status, error, message, data } = response;
+
+    res.status(status).send({ error, message, data });
+  });
+
+  // TOGGLE LIKE ROUTE ----------------------------------------------------------------------------------------
+  app.post("/api/photos/:id/toggle_like", async (req, res) => {
+    const { id } = req.user;
+    const { photoId, value, type } = req.body;
+
+    // update the like
+    await toggleLike(photoId, id, value);
+
+    let response = null;
+
+    // get photo data with different properties depending on type
+    if (type === "single") {
+      response = await getPhotoFull(photoId, id);
+    } else if (type === "multi") {
+      response = await getPhotoMin(photoId, id);
+    }
+
     const { status, error, message, data } = response;
 
     res.status(status).send({ error, message, data });
   });
 };
-
-// args: userId, type, page=null
-
-// users 6 7 8 9 10 11 12
-// photos: 18 19 20 21 22

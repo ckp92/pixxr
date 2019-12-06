@@ -253,15 +253,10 @@ export const getPhoto = id => async dispatch => {
 };
 
 // will toggle like or unlike on click
-export const toggleLike = async (
-  value,
-  userId,
-  type,
-  page = null
-) => async dispatch => {
+export const toggleLike = (photoId, value, type) => async dispatch => {
   let data = null;
 
-  const body = { value, userId, type, page };
+  const body = { photoId, value, type };
 
   const options = {
     method: "POST",
@@ -270,7 +265,7 @@ export const toggleLike = async (
   };
 
   try {
-    const res = await fetch("/api/photo/toggle_like");
+    const res = await fetch(`/api/photos/${photoId}/toggle_like`, options);
     data = await res.json();
   } catch (error) {
     console.error(error);
