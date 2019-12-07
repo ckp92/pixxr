@@ -20,7 +20,7 @@ class PhotoCardFull extends Component {
   renderTags = () => {
     const { tags } = this.props;
 
-    if (tags) return;
+    if (!tags) return;
 
     return tags.map(tag => <UnderLineButton key={tag} content={`#${tag}`} />);
   };
