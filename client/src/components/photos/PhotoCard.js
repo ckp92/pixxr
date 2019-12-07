@@ -41,9 +41,11 @@ class PhotoCard extends Component {
           <img src={image_url} alt={title} />
         </div>
         <div className="card-bottom">
-          <h4>
-            {title} by {username}
-          </h4>
+          <div className="title">
+            <h4>
+              {title} - {username}
+            </h4>
+          </div>
           <div className="stats">
             <div className="left-stats">
               {" "}

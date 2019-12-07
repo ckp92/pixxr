@@ -8,10 +8,13 @@ module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
   app.get("/api/photos", async (req, res) => {
     // e.g. /api/photos?page=0&userId=6
+    // id === current user id
+    // userId === id of user who's photos we want to see
     // if no userId, getPhotos will set it to 'null' and it will get ALL photos
+    const { id } = req.user;
     const { page, userId } = req.query;
 
-    const response = await getPhotos(page, req.user.id, userId);
+    const response = await getPhotos(page, id, userId);
     const { status, error, message, data } = response;
 
     res.status(status).send({ error, message, data });
@@ -19,17 +22,24 @@ module.exports = app => {
 
   // ADD NEW PHOTO ROUTE --------------------------------------------------------------------------------------
   app.post("/api/photos/new", async (req, res) => {
-    const response = await addPhoto(req.body);
-    const { status, error, message } = response;
+    const { id } = req.user;
 
-    res.status(status).send({ error, message });
+    // add photo + tags and get insertId of photo
+    const photoId = await addPhoto(req.body, id);
+
+    // get full photo data
+    const response = await getPhotoFull(photoId, id);
+    const { status, error, message, data } = response;
+
+    res.status(status).send({ error, message, data });
   });
 
   // GET SINGLE PHOTO ROUTE -----------------------------------------------------------------------------------
   app.get("/api/photos/:id", async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.user;
+    const photoId = req.params.id;
 
-    const response = await getPhotoFull(id, req.user.id);
+    const response = await getPhotoFull(photoId, id);
     const { status, error, message, data } = response;
 
     res.status(status).send({ error, message, data });

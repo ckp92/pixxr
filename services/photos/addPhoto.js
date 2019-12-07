@@ -1,8 +1,8 @@
 const usePooledConnection = require("../mysql/usePooledConnection");
 const generalQuery = require("../mysql/generalQuery");
 
-module.exports = async args => {
-  const { imgUrl, imgTitle, imgTags, userId } = args;
+module.exports = async (formValues, userId) => {
+  const { imgUrl, imgTitle, imgTags } = formValues;
   // add the photo to the db
   const addPhotoQueryStr = `INSERT INTO photos(image_url, title, user_id) VALUES(?, ?, ?)`;
   const addPhotoOkPacket = await usePooledConnection(
@@ -57,10 +57,6 @@ module.exports = async args => {
     ).catch(error => console.error(error));
   });
 
-  // return obj
-  return {
-    status: 200,
-    error: false,
-    message: "Success!"
-  };
+  // return insertId which will be used to get the photo object
+  return addPhotoOkPacket.insertId;
 };

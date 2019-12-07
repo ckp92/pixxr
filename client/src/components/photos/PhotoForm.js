@@ -3,19 +3,20 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { addPhoto } from "../../actions";
 import validateTags from "../../utils/validateTags";
 import formFields from "./formFields";
 import FormField from "../FormField";
 import GenericButton from "../GenericButton";
 
 class PhotoForm extends Component {
-  // url, title, tags, userId
+  // url, title, tags
   onFormSubmit = formValues => {
-    const { auth } = this.props;
-    const values = { ...formValues, userId: auth.id };
+    const { addPhoto, history } = this.props;
 
     console.log("onFormSubmit Values: ", formValues);
-    console.log("obj to send to backend: ", values);
+
+    addPhoto(formValues, history);
   };
 
   renderForm = () => {
@@ -45,7 +46,7 @@ class PhotoForm extends Component {
               color="generic"
               onButtonClick={this.onClickBack}
             />
-            <GenericButton text="Next" color="generic" type="submit" />
+            <GenericButton text="Save" color="generic" type="submit" />
           </div>
         </div>
       </form>
@@ -73,10 +74,6 @@ const validate = formValues => {
   return errors;
 };
 
-const mapStateToProps = ({ auth }) => {
-  return { auth };
-};
-
-const connected = connect(mapStateToProps, {})(withRouter(PhotoForm));
+const connected = connect(null, { addPhoto })(withRouter(PhotoForm));
 
 export default reduxForm({ form: "photoForm", validate })(connected);

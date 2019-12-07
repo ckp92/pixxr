@@ -15,16 +15,18 @@ import {
   CLOSE_EMAIL_MODAL,
   GET_PHOTOS,
   GET_PHOTO,
-  TOGGLE_LIKE
+  TOGGLE_LIKE,
+  ADD_PHOTO
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
 
+// will toggle landing mode ----------------------------------------------------------------------------------
 export const toggleLanding = value => {
   return { type: TOGGLE_LANDING, payload: value };
 };
 
-// will check to see if username is unique
+// will check to see if username is unique -------------------------------------------------------------------
 export const checkUniqueUsername = username => async dispatch => {
   let payload = null;
 
@@ -53,12 +55,12 @@ export const checkUniqueUsername = username => async dispatch => {
   dispatch({ type: UNIQUE_USERNAME, payload });
 };
 
-// will be either 'login' or 'signup' depending on what user selects
+// will be either 'login' or 'signup' depending on what user selects -----------------------------------------
 export const toggleSignupMode = value => {
   return { type: SIGNUP_MODE, payload: value };
 };
 
-// login
+// login -----------------------------------------------------------------------------------------------------
 export const login = (formValues, history) => async dispatch => {
   let data = null;
 
@@ -84,7 +86,7 @@ export const login = (formValues, history) => async dispatch => {
   if (data.id) history.push("/photos");
 };
 
-// signup
+// signup ----------------------------------------------------------------------------------------------------
 export const signup = (formValues, history) => async dispatch => {
   let data = null;
 
@@ -110,7 +112,7 @@ export const signup = (formValues, history) => async dispatch => {
   if (data.id) history.push("/photos");
 };
 
-// get user
+// get user -------------------------------------------------------------------------------------------------
 export const getUser = () => async dispatch => {
   let data = null;
 
@@ -121,12 +123,10 @@ export const getUser = () => async dispatch => {
     console.error(error);
   }
 
-  // fetch doesn't accept empty response. If response is empty (undefined), error will get caught by 'catch' block and 'data' will remain as null
-
   dispatch({ type: GET_USER, payload: data });
 };
 
-// set username
+// set username ----------------------------------------------------------------------------------------------
 export const setUsername = (values, history) => async dispatch => {
   let data = null;
 
@@ -154,39 +154,39 @@ export const setUsername = (values, history) => async dispatch => {
   if (data) history.push("/");
 };
 
-// clear setUsername reducer to 'null'
+// clear setUsername reducer to 'null' ----------------------------------------------------------------------
 export const clearSetUsername = () => {
   return { type: CLEAR_SET_USERNAME, payload: null };
 };
 
-// checks to see if username entered is alphanumeric
+// checks to see if username entered is alphanumeric --------------------------------------------------------
 export const checkAlphanumeric = username => {
   const result = alphanumericTest(username);
 
   return { type: CHECK_ALPHANUMERIC, payload: result };
 };
 
-// clear alphanumeric
+// clear alphanumeric ---------------------------------------------------------------------------------------
 export const clearAlphanumeric = () => {
   return { type: CHECK_ALPHANUMERIC, payload: null };
 };
 
-// toggle brand dropdown on/off
+// toggle brand dropdown on/off ------------------------------------------------------------------------------
 export const brandDropdownClick = value => {
   return { type: BRAND_DROPDOWN_CLICK, payload: value };
 };
 
-// toggle menu dropdown on/off
+// toggle menu dropdown on/off -------------------------------------------------------------------------------
 export const menuDropdownClick = value => {
   return { type: MENU_DROPDOWN_CLICK, payload: value };
 };
 
-// toggle formReview mode
+// toggle formReview mode ------------------------------------------------------------------------------------
 export const toggleFormReview = value => {
   return { type: TOGGLE_FORM_REVIEW, payload: value };
 };
 
-// send contact email
+// send contact email ----------------------------------------------------------------------------------------
 export const sendEmail = (values, history) => async dispatch => {
   let data = null;
 
@@ -209,12 +209,12 @@ export const sendEmail = (values, history) => async dispatch => {
   dispatch({ type: SEND_EMAIL, payload: data });
 };
 
-// close email feedback modal
+// close email feedback modal --------------------------------------------------------------------------------
 export const closeEmailModal = () => {
   return { type: CLOSE_EMAIL_MODAL };
 };
 
-// Get photos from db
+// Get photos from db ----------------------------------------------------------------------------------------
 export const getPhotos = (page, userId = null) => async dispatch => {
   let data = null;
   const userIdQuery = userId !== null ? `&userId=${userId}` : "";
@@ -233,7 +233,7 @@ export const getPhotos = (page, userId = null) => async dispatch => {
   dispatch({ type: GET_PHOTOS, payload: data });
 };
 
-// will get a single photo
+// will get a single photo -----------------------------------------------------------------------------------
 export const getPhoto = id => async dispatch => {
   let data = null;
 
@@ -252,7 +252,7 @@ export const getPhoto = id => async dispatch => {
   dispatch({ type: GET_PHOTO, payload: data });
 };
 
-// will toggle like or unlike on click
+// will toggle like or unlike on click -----------------------------------------------------------------------
 export const toggleLike = (photoId, value, type) => async dispatch => {
   let data = null;
 
@@ -277,4 +277,38 @@ export const toggleLike = (photoId, value, type) => async dispatch => {
   }
 
   dispatch({ type: TOGGLE_LIKE, payload: data });
+};
+
+// add photo -------------------------------------------------------------------------------------------------
+export const addPhoto = (values, history) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(values)
+  };
+
+  try {
+    const res = await fetch("/api/photos/new", options);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error adding the photo. Please try again",
+      data: null
+    };
+  }
+
+  // make another reducer. if payload here is null (failure) reducer will render error modal
+  // on failure
+  if (data.error || !data.data || (data.data && data.data.length !== 1)) {
+    dispatch({ type: ADD_PHOTO, payload: null });
+    history.push("/");
+  } else {
+    dispatch({ type: ADD_PHOTO, payload: data });
+    const { id } = data.data[0];
+    history.push(`/photos/${id}`);
+  }
 };

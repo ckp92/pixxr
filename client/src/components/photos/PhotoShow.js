@@ -28,10 +28,9 @@ class PhotoShow extends Component {
       photos: { error, message, data }
     } = this.props;
 
-    if (data.length !== 1) return <p>Loading...</p>;
-
     // error msg
-    if (error || !data[0].id) return <p>Oops! {message}</p>;
+    if (error || data.length !== 1 || !data[0].id)
+      return <p>Oops! {message}</p>;
 
     // success
     return <PhotoCardFull {...data[0]} type="single" />;

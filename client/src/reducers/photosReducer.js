@@ -1,4 +1,9 @@
-import { GET_PHOTOS, GET_PHOTO, TOGGLE_LIKE } from "../actions/types";
+import {
+  GET_PHOTOS,
+  ADD_PHOTO,
+  GET_PHOTO,
+  TOGGLE_LIKE
+} from "../actions/types";
 
 export default (state = null, action) => {
   switch (action.type) {
@@ -7,6 +12,8 @@ export default (state = null, action) => {
       return action.payload;
     case TOGGLE_LIKE:
       return returnToggleLike({ ...state }, action.payload);
+    case ADD_PHOTO:
+      return action.payload ? action.payload : state;
     default:
       return state;
   }
