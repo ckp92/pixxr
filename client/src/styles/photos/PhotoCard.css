@@ -87,3 +87,8 @@
     height: 150px;
   }
 }
+@media (max-height: 360px) {
+  .card-top img {
+    height: auto;
+  }
+}

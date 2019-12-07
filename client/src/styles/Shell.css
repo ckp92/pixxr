@@ -74,11 +74,19 @@
   .shell-content-form {
     width: 100%;
   }
+
+  .shell-footer {
+    margin-bottom: 20px;
+  }
 }
 
 @media (max-height: 540px) {
   .shell {
     padding: 15px 15px 0 15px;
     width: 100%;
+  }
+
+  .shell-footer {
+    margin-bottom: 20px;
   }
 }

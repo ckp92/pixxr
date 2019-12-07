@@ -52,7 +52,9 @@ class Pagination extends Component {
     return (
       <div className="pagination-inner">
         {this.renderLeft(first, prev, 0)}
-        <div className="current-page">{currentPage + 1}</div>
+        <div className="current-page">
+          Page {currentPage + 1} of {numPages}
+        </div>
         {this.renderRight(next, last, pagesZeroIndexed)}
       </div>
     );
