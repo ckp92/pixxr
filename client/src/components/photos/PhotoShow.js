@@ -32,6 +32,8 @@ class PhotoShow extends Component {
     if (error || data.length !== 1 || !data[0].id)
       return <p>Oops! {message}</p>;
 
+    console.log(data);
+
     // success
     return <PhotoCardFull {...data[0]} type="single" />;
   };
