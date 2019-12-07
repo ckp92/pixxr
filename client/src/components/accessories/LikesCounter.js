@@ -32,6 +32,8 @@ class LikesCounter extends Component {
     if (type === "single") {
       const { likes } = this.props;
 
+      if (!likes) return;
+
       // no likes
       if (!likes.length) return "0";
 
