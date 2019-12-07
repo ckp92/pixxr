@@ -16,7 +16,8 @@ import {
   GET_PHOTOS,
   GET_PHOTO,
   TOGGLE_LIKE,
-  ADD_PHOTO
+  ADD_PHOTO,
+  SET_PAGE
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -311,4 +312,9 @@ export const addPhoto = (values, history) => async dispatch => {
     const { id } = data.data[0];
     history.push(`/photos/${id}`);
   }
+};
+
+// set current page for pagination ----------------------------------------------------------------------------
+export const setPage = value => {
+  return { type: SET_PAGE, payload: value };
 };

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getPhoto } from "../../actions";
 import Shell from "../Shell";
 import PhotoCardFull from "./PhotoCardFull";
+import GenericButton from "../GenericButton";
 
 class PhotoShow extends Component {
   componentDidMount = () => {
@@ -38,7 +39,18 @@ class PhotoShow extends Component {
     return <PhotoCardFull {...data[0]} type="single" />;
   };
 
-  renderFooter = () => {};
+  renderFooter = () => {
+    const { history } = this.props;
+    return (
+      <div className="back-to-photos">
+        <GenericButton
+          color="generic"
+          text="Back to Photos"
+          onButtonClick={() => history.push("/")}
+        />
+      </div>
+    );
+  };
 
   render() {
     return (

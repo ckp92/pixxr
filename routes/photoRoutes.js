@@ -1,4 +1,5 @@
 const addPhoto = require("../services/photos/addPhoto");
+const countPhotos = require("../services/photos/countPhotos");
 const getPhotos = require("../services/photos/getPhotos");
 const getPhotoMin = require("../services/photos/getPhotoMin");
 const getPhotoFull = require("../services/photos/getPhotoFull");
@@ -12,12 +13,16 @@ module.exports = app => {
     // userId === id of user who's photos we want to see
     // if no userId, getPhotos will set it to 'null' and it will get ALL photos
     const { id } = req.user;
-    const { page, userId } = req.query;
+    // const { page, userId } = req.query;
+    const { page, searchType, value } = req.query;
 
-    const response = await getPhotos(page, id, userId);
+    // get total number of photos
+    const total = await countPhotos(searchType, value);
+
+    const response = await getPhotos(page, id, searchType, value);
     const { status, error, message, data } = response;
 
-    res.status(status).send({ error, message, data });
+    res.status(status).send({ error, message, total, data });
   });
 
   // ADD NEW PHOTO ROUTE --------------------------------------------------------------------------------------

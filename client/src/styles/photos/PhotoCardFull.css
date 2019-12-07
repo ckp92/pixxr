@@ -1,5 +1,5 @@
 .photo-card-full {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
@@ -22,7 +22,7 @@
 }
 
 .card-full-bottom {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-top: none;
   width: 100%;
   padding: 5px;
@@ -31,4 +31,10 @@
 .stats-full {
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 640px) {
+  .photo-card-full {
+    width: 100%;
+  }
 }

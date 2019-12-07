@@ -2,8 +2,13 @@ const usePooledConnection = require("../mysql/usePooledConnection");
 const generalQuery = require("../mysql/generalQuery");
 const getMinProperties = require("./getMinProperties");
 
-module.exports = async (page, currentUserId, userId = null) => {
-  const limit = 20;
+module.exports = async (
+  page,
+  currentUserId,
+  searchType = null,
+  value = null
+) => {
+  const limit = 5;
   let getPhotosQueryStr = `SELECT * FROM photos 
     ORDER BY created_at DESC 
     LIMIT ? 
@@ -11,14 +16,14 @@ module.exports = async (page, currentUserId, userId = null) => {
 
   let getPhotosArgs = [limit, page * limit];
 
-  // change variables if user wants to find their own photos (might have user with id 0)
-  if (userId || userId === 0) {
+  // change variables if we want to find photos of a certian user (might have user with id 0)
+  if (searchType === "user") {
     getPhotosQueryStr = `SELECT * FROM photos 
       WHERE user_id = ? 
       ORDER BY created_at DESC 
       LIMIT ? 
       OFFSET ?`;
-    getPhotosArgs.unshift(userId);
+    getPhotosArgs.unshift(value);
   }
 
   // get 5 photos

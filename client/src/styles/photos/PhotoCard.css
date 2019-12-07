@@ -1,5 +1,4 @@
 .photo-card {
-  /* border: 2px solid black; */
   -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
@@ -12,8 +11,6 @@
   cursor: pointer;
 }
 
-/* border-radius on: 1) .photo-card, 2) .card-top img, 3) .stats button */
-
 .photo-card:hover {
   transform: scale(1.02);
   -webkit-box-shadow: 0px 0px 15px -5px rgba(0, 0, 0, 0.75);
@@ -22,31 +19,26 @@
 }
 
 .card-top {
-  /* border: 1px solid black; */
   display: flex;
   justify-content: center;
   margin: 0;
   width: 100%;
-  /* padding: 5px; */
   padding-bottom: 0;
 }
 
 .card-top img {
-  /* width: 100%; */
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   height: 250px;
 }
 
 .card-bottom {
-  /* border: 2px solid black; */
   border-top: none;
   padding: 5px 7px;
 }
 
 .stats {
   display: flex;
-  /* border: 1px solid black; */
   justify-content: space-between;
 }
 
@@ -57,17 +49,11 @@
 }
 
 .card-bottom .title {
-  /* display: flex;
-  flex-wrap: wrap; */
 }
 
 .card-bottom h4 {
   margin: 0;
   font-size: 0.8rem;
-  /* width: 50%; */
-  /* overflow: hidden; */
-  /* display: flex; */
-  /* flex-wrap: wrap; */
 }
 
 .card-bottom p {
@@ -92,7 +78,12 @@
   .card-top img {
     width: 100%;
     height: auto;
-    /* padding: 5px; */
     padding-bottom: 0;
+  }
+}
+
+@media (max-height: 540px) {
+  .card-top img {
+    height: 150px;
   }
 }

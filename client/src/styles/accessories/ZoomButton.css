@@ -11,3 +11,23 @@
 .zoom-button i:hover {
   transform: scale(1.5);
 }
+
+@media (max-width: 640px) {
+  .zoom-button i:hover {
+    transform: none;
+  }
+
+  .zoom-button i:active {
+    transform: scale(1.5);
+  }
+}
+
+@media (max-height: 560px) {
+  .zoom-button i:hover {
+    transform: none;
+  }
+
+  .zoom-button i:active {
+    transform: scale(1.5);
+  }
+}

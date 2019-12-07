@@ -1,9 +1,9 @@
 import "../../styles/accessories/ZoomButton.css";
 import React from "react";
 
-const ZoomButton = ({ content, onClick }) => {
+const ZoomButton = ({ content, onClick, id }) => {
   return (
-    <button onClick={onClick} className="zoom-button">
+    <button id={id} onClick={onClick} className="zoom-button">
       {content}
     </button>
   );

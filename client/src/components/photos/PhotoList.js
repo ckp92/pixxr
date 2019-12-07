@@ -1,13 +1,17 @@
 import "../../styles/photos/PhotoList.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPhotos } from "../../actions/index";
-import PhotoCard from "./PhotoCard";
+import { getPhotos, setPage } from "../../actions/index";
 import Shell from "../Shell";
+import PhotoCard from "./PhotoCard";
+import Pagination from "../accessories/Pagination";
 
 class PhotoList extends Component {
   componentDidMount = () => {
-    this.props.getPhotos(0);
+    const { getPhotos, setPage } = this.props;
+
+    getPhotos(0);
+    setPage(0);
   };
 
   renderHeader = () => {
@@ -39,7 +43,7 @@ class PhotoList extends Component {
   renderFooter = () => {
     return (
       <React.Fragment>
-        <p>Pagination will go here!</p>
+        <Pagination />
       </React.Fragment>
     );
   };
@@ -58,8 +62,8 @@ class PhotoList extends Component {
   }
 }
 
-const mapStateToProps = ({ photos }) => {
-  return { photos };
+const mapStateToProps = ({ photos, currentPage }) => {
+  return { photos, currentPage };
 };
 
-export default connect(mapStateToProps, { getPhotos })(PhotoList);
+export default connect(mapStateToProps, { getPhotos, setPage })(PhotoList);
