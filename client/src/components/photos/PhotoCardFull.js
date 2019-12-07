@@ -29,6 +29,8 @@ class PhotoCardFull extends Component {
   renderComments = () => {
     const { comments } = this.props;
 
+    if (!comments) return;
+
     if (!comments.length) return <p>No Comments Yet</p>;
   };
 
