@@ -87,7 +87,7 @@
     height: 150px;
   }
 }
-@media (max-height: 360px) {
+@media (max-height: 359px) {
   .card-top img {
     height: auto;
   }
