@@ -40,7 +40,7 @@ class LikesCounter extends Component {
       let str = `by ${likes[0]}`;
 
       // 1 like
-      if (likes.length === 1) return str;
+      if (likes.length === 1) return <UnderlineButton content={str} />;
 
       // 2 likes
       if (likes.length > 1) str += ` and ${likes.length - 1} other`;

@@ -20,8 +20,11 @@ module.exports = async (formValues, userId) => {
 
   const photoId = addPhotoOkPacket.insertId;
 
-  // for each tag: insert into tags if doesn't already exist
-  const imgTagsArray = imgTags.split(",").map(tag => tag.trim());
+  // for each tag: remove blanks (trailing comma) + insert into tags if doesn't already exist
+  const imgTagsArray = imgTags
+    .split(",")
+    .filter(tag => tag.toString().trim().length)
+    .map(tag => tag.trim());
   const insertIgnoreTagsStr = `INSERT IGNORE INTO tags (tag_name) VALUES(?)`;
   const insertPhotoTagsStr = `INSERT INTO photo_tags(photo_id, tag_id) VALUES (?, ?)`;
   const getTagIdQueryStr = `SELECT id FROM tags WHERE tag_name = ?`;

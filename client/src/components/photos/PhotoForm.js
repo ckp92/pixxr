@@ -57,6 +57,12 @@ class PhotoForm extends Component {
 const validate = formValues => {
   const errors = {};
 
+  // length validation
+  if (formValues.imgUrl && formValues.imgUrl.length > 250)
+    errors.imgUrl = "Too long. Max length: 250 chars";
+  if (formValues.imgTitle && formValues.imgTitle.length > 250)
+    errors.imgTitle = "Too long. Max length: 250 chars";
+
   // valid imgurl regex
   const re = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 

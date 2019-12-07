@@ -1,12 +1,19 @@
 import alphanumericTest from "./alphanumericTest";
 
 export default tags => {
-  const invalidTags = tags
-    .split(",")
-    .map(tag => tag.trim())
-    .filter(tag => alphanumericTest(tag) === false);
+  const tagsArray = tags.split(",").map(tag => tag.trim());
 
-  if (invalidTags.length) {
-    return `These tags are invalid: ${invalidTags}`;
+  const tooLongTags = tagsArray.filter(tag => tag.length > 250);
+
+  const nonAlphanumericTags = tagsArray.filter(
+    tag => alphanumericTest(tag) === false
+  );
+
+  if (tooLongTags.length) {
+    return `Max tag length: 250 chars. Invalid tags: ${tooLongTags}`;
+  }
+
+  if (nonAlphanumericTags.length) {
+    return `Invalid tags: ${nonAlphanumericTags}`;
   }
 };
