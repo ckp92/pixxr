@@ -41,7 +41,5 @@ export default dateString => {
   }
 
   // second
-  const secs = Math.floor(seconds);
-  const secondsPlural = secs === 1 ? "" : "s";
-  return `${secs} second${secondsPlural} ago`;
+  return "Just Now";
 };
