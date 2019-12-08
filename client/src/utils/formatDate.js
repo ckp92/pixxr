@@ -41,5 +41,5 @@ export default dateString => {
   }
 
   // second
-  return "Just Now";
+  return "Just now";
 };
