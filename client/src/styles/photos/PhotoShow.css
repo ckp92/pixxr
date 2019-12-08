@@ -1,0 +1,10 @@
+.back-to-photos .generic-button {
+  height: 40px;
+  margin-top: 40px;
+}
+
+@media (max-width: 640px) {
+  .back-to-photos .generic-button {
+    margin-top: 20px;
+  }
+}

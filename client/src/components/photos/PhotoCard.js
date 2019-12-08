@@ -2,14 +2,20 @@ import "../../styles/photos/PhotoCard.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import formatDate from "../../utils/formatDate";
 import LikesCounter from "../accessories/LikesCounter";
 import ConfigButtons from "../accessories/ConfigButtons";
+import UnderlineButton from "../accessories/UnderlineButton";
 
 class PhotoCard extends Component {
   onClick = () => {
     const { history, id } = this.props;
 
     history.push(`/photos/${id}`);
+  };
+
+  onUsernameClick = e => {
+    e.stopPropagation();
   };
 
   renderConfig = () => {
@@ -33,7 +39,8 @@ class PhotoCard extends Component {
       title,
       username,
       type,
-      id
+      id,
+      created_at
     } = this.props;
     return (
       <div className="photo-card" onClick={this.onClick}>
@@ -43,8 +50,13 @@ class PhotoCard extends Component {
         <div className="card-bottom">
           <div className="title">
             <h4>
-              {title} - {username}
+              {title} -{" "}
+              <UnderlineButton
+                content={username}
+                onClick={e => this.onUsernameClick(e)}
+              />
             </h4>
+            <p>{formatDate(created_at)}</p>
           </div>
           <div className="stats">
             <div className="left-stats">

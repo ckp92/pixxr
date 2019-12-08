@@ -35,3 +35,5 @@ export const GET_PHOTO = "GET_PHOTO";
 export const TOGGLE_LIKE = "TOGGLE_LIKE";
 
 export const SET_PAGE = "SET_PAGE";
+
+export const ADD_COMMENT = "ADD_COMMENT";

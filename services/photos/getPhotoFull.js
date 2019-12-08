@@ -73,7 +73,8 @@ module.exports = async (id, currentUserId) => {
     ON comments.photo_id = photos.id 
     INNER JOIN users 
     ON users.id = comments.user_id 
-    WHERE photo_id = ?;`;
+    WHERE photo_id = ?
+    ORDER BY comments.created_at DESC;`;
 
   const commentsRows = await usePooledConnection(
     generalQuery,

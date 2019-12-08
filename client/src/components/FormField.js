@@ -4,6 +4,7 @@ import React from "react";
 const FormField = ({
   input,
   name,
+  id,
   placeholder,
   type,
   meta: { active, error, touched }
@@ -18,6 +19,7 @@ const FormField = ({
       case "textarea":
         return (
           <textarea
+            id={id}
             name={name}
             placeholder={placeholder}
             cols="30"
@@ -27,7 +29,13 @@ const FormField = ({
         );
       default:
         return (
-          <input name={name} placeholder={placeholder} type={type} {...input} />
+          <input
+            name={name}
+            id={id}
+            placeholder={placeholder}
+            type={type}
+            {...input}
+          />
         );
     }
   };

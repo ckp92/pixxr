@@ -1,0 +1,46 @@
+.comments {
+  margin-top: 30px;
+}
+
+.no-comments {
+  text-align: center;
+}
+
+.comment {
+  margin: 20px 0;
+}
+
+.comment-info {
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#comment-username {
+  font-weight: bolder;
+}
+
+.comment-date {
+  font-size: small;
+}
+
+.comment-text {
+  border: 2px solid #00264d;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.comment-text p {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .comment-text {
+    font-size: small;
+  }
+}
+@media (max-height: 560px) {
+  .comment-text {
+    font-size: small;
+  }
+}

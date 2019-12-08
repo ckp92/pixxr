@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { toggleFormReview, sendEmail } from "../../actions";
 import { withRouter } from "react-router-dom";
+import formatNewLine from "../../utils/formatNewLine";
 import formFields from "./formFields";
 import GenericButton from "../GenericButton";
 
@@ -21,9 +22,7 @@ class ContactFormReview extends Component {
   formatFormValues = name => {
     const { formValues } = this.props;
     if (name === "body") {
-      return formValues.body.split("\n").map((line, i) => {
-        return <p key={i}>{line}</p>;
-      });
+      return formatNewLine(formValues.body);
     } else {
       return <p>{formValues[name]}</p>;
     }

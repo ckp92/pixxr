@@ -17,7 +17,8 @@ import {
   GET_PHOTO,
   TOGGLE_LIKE,
   ADD_PHOTO,
-  SET_PAGE
+  SET_PAGE,
+  ADD_COMMENT
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -317,4 +318,29 @@ export const addPhoto = (values, history) => async dispatch => {
 // set current page for pagination ----------------------------------------------------------------------------
 export const setPage = value => {
   return { type: SET_PAGE, payload: value };
+};
+
+// add comment to a post --------------------------------------------------------------------------------------
+export const addComment = values => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(values)
+  };
+
+  try {
+    const res = await fetch("/api/comments/new", options);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error adding the comment. Please try again",
+      data: null
+    };
+  }
+
+  dispatch({ type: ADD_COMMENT, payload: data });
 };

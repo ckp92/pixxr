@@ -4,6 +4,7 @@ const getPhotos = require("../services/photos/getPhotos");
 const getPhotoMin = require("../services/photos/getPhotoMin");
 const getPhotoFull = require("../services/photos/getPhotoFull");
 const toggleLike = require("../services/photos/toggleLike");
+const addComment = require("../services/photos/addComment");
 
 module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
@@ -66,6 +67,22 @@ module.exports = app => {
     } else if (type === "multi") {
       response = await getPhotoMin(photoId, id);
     }
+
+    const { status, error, message, data } = response;
+
+    res.status(status).send({ error, message, data });
+  });
+
+  // ADD COMMENT ROUTE ---------------------------------------------------------------------------------------
+  app.post("/api/comments/new", async (req, res) => {
+    const { id } = req.user;
+    const { commentText, photoId } = req.body;
+
+    // add the comment
+    await addComment(id, photoId, commentText);
+
+    // get new photo object
+    const response = await getPhotoFull(photoId, id);
 
     const { status, error, message, data } = response;
 

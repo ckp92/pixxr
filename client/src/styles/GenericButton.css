@@ -1,4 +1,5 @@
 .generic-button {
+  border-radius: 10px;
   border-width: 2px;
   border-style: solid;
   outline: none;

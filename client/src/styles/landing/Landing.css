@@ -65,6 +65,7 @@
   width: 70%;
   height: 25%;
   margin-bottom: 3px;
+  border-radius: 10px;
   border-width: 2px;
   border-style: solid;
   display: flex;
