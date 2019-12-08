@@ -1,0 +1,61 @@
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title .underline-button {
+  font-weight: bolder;
+}
+
+#card-title .underline-button,
+#card-title h4,
+#card-title p {
+  font-size: 0.8rem;
+}
+
+#card-full-title {
+  padding: 0 5px;
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+#card-full-title h4,
+#card-full-title .underline-button,
+#card-full-title p {
+  font-size: 1rem;
+}
+
+.title p {
+  margin: 0;
+  margin-left: 10px;
+}
+
+.title h4 {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .title .underline-button:hover {
+    text-decoration: none;
+    font-weight: bolder;
+  }
+
+  .title .underline-button:active {
+    text-decoration: underline;
+    font-weight: bolder;
+  }
+}
+
+@media (max-height: 560px) {
+  .title .underline-button:hover {
+    text-decoration: none;
+    font-weight: bolder;
+  }
+
+  .title .underline-button:active {
+    text-decoration: underline;
+    font-weight: bolder;
+  }
+}

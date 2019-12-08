@@ -2,7 +2,7 @@ import "../../styles/photos/PhotoCard.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import formatDate from "../../utils/formatDate";
+import Title from "../accessories/Title";
 import LikesCounter from "../accessories/LikesCounter";
 import ConfigButtons from "../accessories/ConfigButtons";
 import UnderlineButton from "../accessories/UnderlineButton";
@@ -40,6 +40,7 @@ class PhotoCard extends Component {
       username,
       type,
       id,
+      user_id,
       created_at
     } = this.props;
     return (
@@ -48,16 +49,13 @@ class PhotoCard extends Component {
           <img src={image_url} alt={title} />
         </div>
         <div className="card-bottom">
-          <div className="title">
-            <h4>
-              {title} -{" "}
-              <UnderlineButton
-                content={username}
-                onClick={e => this.onUsernameClick(e)}
-              />
-            </h4>
-            <p>{formatDate(created_at)}</p>
-          </div>
+          <Title
+            id="card-title"
+            title={title}
+            username={username}
+            userId={user_id}
+            created_at={created_at}
+          />
           <div className="stats">
             <div className="left-stats">
               {" "}

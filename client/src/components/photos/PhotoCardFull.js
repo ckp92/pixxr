@@ -1,8 +1,8 @@
 import "../../styles/photos/PhotoCardFull.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import LikesCounter from "../accessories/LikesCounter";
+import Title from "../accessories/Title";
 import ConfigButtons from "../accessories/ConfigButtons";
 import UnderlineButton from "../accessories/UnderlineButton";
 import Comments from "../accessories/Comments";
@@ -49,6 +49,8 @@ class PhotoCardFull extends Component {
       title,
       likes,
       id,
+      user_id,
+      created_at,
       type
     } = this.props;
     return (
@@ -66,16 +68,13 @@ class PhotoCardFull extends Component {
             />
             <div className="config-buttons">{this.renderConfig()}</div>
           </div>
-          <div className="title">
-            <h4>
-              {title} -{" "}
-              <UnderlineButton
-                content={username}
-                onClick={e => this.onUsernameClick(e)}
-                id="title-underline-button"
-              />
-            </h4>
-          </div>
+          <Title
+            id="card-full-title"
+            title={title}
+            username={username}
+            userId={user_id}
+            created_at={created_at}
+          />
           <div className="tags">{this.renderTags()}</div>
           {this.renderComments()}
         </div>
