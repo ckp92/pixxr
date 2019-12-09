@@ -19,7 +19,8 @@ import {
   ADD_PHOTO,
   SET_PAGE,
   ADD_COMMENT,
-  TOGGLE_SHOW_LIKES
+  TOGGLE_SHOW_LIKES,
+  SET_SEARCH_TYPE
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -218,11 +219,16 @@ export const closeEmailModal = () => {
 };
 
 // Get photos from db ----------------------------------------------------------------------------------------
-export const getPhotos = (page, userId = null) => async dispatch => {
+export const getPhotos = (
+  page,
+  searchType = null,
+  value = null
+) => async dispatch => {
   let data = null;
-  const userIdQuery = userId !== null ? `&userId=${userId}` : "";
+  const searchTypeQuery =
+    searchType !== null ? `&searchType=${searchType}&value=${value}` : "";
   try {
-    const res = await fetch(`/api/photos?page=${page}${userIdQuery}`);
+    const res = await fetch(`/api/photos?page=${page}${searchTypeQuery}`);
     data = await res.json();
   } catch (error) {
     console.error(error);
@@ -349,4 +355,9 @@ export const addComment = values => async dispatch => {
 // toggle show likes modal ------------------------------------------------------------------------------------
 export const toggleShowLikes = value => {
   return { type: TOGGLE_SHOW_LIKES, payload: value };
+};
+
+// set search type --------------------------------------------------------------------------------------------
+export const setSearchType = obj => {
+  return { type: SET_SEARCH_TYPE, payload: obj };
 };

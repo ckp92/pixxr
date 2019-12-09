@@ -38,14 +38,14 @@ export const MENU_OPTIONS = [
     content: "Add Photo"
   },
   {
-    type: "link",
-    path: "/photos",
+    type: "button",
+    path: "photos",
     icon: "fas fa-images fa-sm",
     content: "All Photos"
   },
   {
-    type: "link",
-    path: "/",
+    type: "button",
+    path: "user",
     icon: "fas fa-images fa-sm",
     content: "My Photos"
   },

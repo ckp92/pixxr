@@ -15,6 +15,8 @@ import PhotoDelete from "./photos/PhotoDelete";
 import PhotoEdit from "./photos/PhotoEdit";
 import PhotoList from "./photos/PhotoList";
 import PhotoShow from "./photos/PhotoShow";
+import PhotoSearchUser from "./photos/PhotoSearchUser";
+import PhotoSearchTag from "./photos/PhotoSearchTag";
 
 class App extends Component {
   componentDidMount = () => {
@@ -46,6 +48,12 @@ class App extends Component {
             <Route path="/photos/edit/:id" exact component={PhotoEdit} />
             <Route path="/photos/delete/:id" exact component={PhotoDelete} />
             <Route path="/photos/:id" exact component={PhotoShow} />
+            <Route path="/user/:id/photos" exact component={PhotoSearchUser} />
+            <Route
+              path="/tag/:tagname/photos"
+              exact
+              component={PhotoSearchTag}
+            />
 
             {/* OTHER ROUTES */}
             <Route path="/docs" exact component={Docs} />

@@ -43,7 +43,7 @@ class LikesCounter extends Component {
       // no likes
       if (!likes.length) return "0";
 
-      let str = `by ${likes[0]}`;
+      let str = `by ${likes[0].username}`;
 
       // 1 like
       if (likes.length === 1) return <UnderlineButton content={str} />;

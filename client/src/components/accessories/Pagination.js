@@ -15,6 +15,9 @@ class Pagination extends Component {
 
     const { total } = photos;
 
+    // no photos
+    if (!total) return;
+
     const photosPerPage = 5;
 
     // get total pages
@@ -62,9 +65,13 @@ class Pagination extends Component {
 
   // run action creators to change the page
   changePage = pageNumber => {
-    const { getPhotos, setPage } = this.props;
+    const {
+      getPhotos,
+      setPage,
+      searchType: { searchType, value }
+    } = this.props;
 
-    getPhotos(pageNumber);
+    getPhotos(pageNumber, searchType, value);
     setPage(pageNumber);
   };
 
@@ -115,8 +122,8 @@ class Pagination extends Component {
   }
 }
 
-const mapStateToProps = ({ photos, currentPage }) => {
-  return { photos, currentPage };
+const mapStateToProps = ({ photos, currentPage, searchType }) => {
+  return { photos, currentPage, searchType };
 };
 
 export default connect(mapStateToProps, { getPhotos, setPage })(Pagination);

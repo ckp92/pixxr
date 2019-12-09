@@ -48,7 +48,11 @@ module.exports = async (id, currentUserId) => {
   const tags = tagRows.map(row => row.tag_name);
 
   // get all the likes
-  const getLikesQueryStr = `SELECT username FROM users
+  const getLikesQueryStr = `SELECT 
+    username,
+    likes.user_id AS like_user_id,
+    likes.created_at AS like_created_at
+    FROM users
     INNER JOIN likes
     ON users.id = likes.user_id
     WHERE photo_id = ?;`;
@@ -60,7 +64,7 @@ module.exports = async (id, currentUserId) => {
     return [];
   });
 
-  const likes = likeRows.map(row => row.username);
+  // const likes = likeRows.map(row => row.username);
 
   // find out if current user has liked it
   const haveILiked = await checkHaveILiked(currentUserId, id);
@@ -90,7 +94,7 @@ module.exports = async (id, currentUserId) => {
       ...photoRows[0],
       username,
       tags,
-      likes,
+      likes: likeRows,
       haveILiked,
       comments: commentsRows
     }

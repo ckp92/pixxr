@@ -13,6 +13,7 @@ import emailReducer from "./emailReducer";
 import photosReducer from "./photosReducer";
 import currentPageReducer from "./currentPageReducer";
 import showLikesReducer from "./showLikesReducer";
+import searchTypeReducer from "./searchTypeReducer";
 
 export default combineReducers({
   landingOn: landingReducer,
@@ -28,5 +29,6 @@ export default combineReducers({
   photos: photosReducer,
   currentPage: currentPageReducer,
   showLikes: showLikesReducer,
+  searchType: searchTypeReducer,
   form: formReducer
 });

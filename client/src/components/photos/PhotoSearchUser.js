@@ -7,7 +7,7 @@ import ListHeader from "../accessories/ListHeader";
 import PhotoCard from "./PhotoCard";
 import Pagination from "../accessories/Pagination";
 
-class PhotoList extends Component {
+class PhotoSearchUser extends Component {
   componentDidMount = () => {
     const {
       getPhotos,
@@ -65,4 +65,6 @@ const mapStateToProps = ({ photos, currentPage, searchType }) => {
   return { photos, currentPage, searchType };
 };
 
-export default connect(mapStateToProps, { getPhotos, setPage })(PhotoList);
+export default connect(mapStateToProps, { getPhotos, setPage })(
+  PhotoSearchUser
+);

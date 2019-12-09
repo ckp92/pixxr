@@ -1,12 +1,18 @@
 import "../../styles/accessories/Title.css";
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { setSearchType } from "../../actions";
 import formatDate from "../../utils/formatDate";
 import UnderlineButton from "../accessories/UnderlineButton";
 
 class Title extends Component {
-  onUsernameClick = (e, userId) => {
+  onUsernameClick = (e, userId, username) => {
+    const { setSearchType, history } = this.props;
     e.stopPropagation();
+
+    setSearchType({ searchType: "user", value: userId, str: username });
+    history.push(`/user/${userId}/photos`);
   };
 
   render() {
@@ -17,7 +23,7 @@ class Title extends Component {
           {title} -{" "}
           <UnderlineButton
             content={username}
-            onClick={e => this.onUsernameClick(e, userId)}
+            onClick={e => this.onUsernameClick(e, userId, username)}
           />
         </h4>
         <p>{formatDate(created_at)}</p>
@@ -26,4 +32,4 @@ class Title extends Component {
   }
 }
 
-export default connect(null, {})(Title);
+export default connect(null, { setSearchType })(withRouter(Title));

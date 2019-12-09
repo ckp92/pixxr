@@ -1,7 +1,8 @@
 import "../../styles/accessories/ShowLikesModal.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toggleShowLikes } from "../../actions";
+import { withRouter } from "react-router-dom";
+import { toggleShowLikes, setSearchType } from "../../actions";
 import Modal from "../Modal";
 import UnderlineButton from "./UnderlineButton";
 import GenericButton from "../GenericButton";
@@ -12,11 +13,23 @@ class ShowLikesModal extends Component {
     const { likes } = this.props.photos.data[0];
     return (
       <div className="likes-list">
-        {likes.map((like, i) => (
-          <UnderlineButton key={i} content={like} />
+        {likes.map(({ username, like_user_id }) => (
+          <UnderlineButton
+            key={like_user_id}
+            onClick={e => this.onUsernameClick(e, like_user_id, username)}
+            content={username}
+          />
         ))}
       </div>
     );
+  };
+
+  onUsernameClick = (e, likeUserId, username) => {
+    const { setSearchType, history } = this.props;
+    e.stopPropagation();
+
+    setSearchType({ searchType: "user", value: likeUserId, str: username });
+    history.push(`/user/${likeUserId}/photos`);
   };
 
   renderActions = () => {
@@ -48,4 +61,6 @@ const mapStateToProps = ({ photos }) => {
   return { photos };
 };
 
-export default connect(mapStateToProps, { toggleShowLikes })(ShowLikesModal);
+export default connect(mapStateToProps, { toggleShowLikes, setSearchType })(
+  withRouter(ShowLikesModal)
+);

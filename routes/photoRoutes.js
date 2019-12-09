@@ -9,12 +9,7 @@ const addComment = require("../services/photos/addComment");
 module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
   app.get("/api/photos", async (req, res) => {
-    // e.g. /api/photos?page=0&userId=6
-    // id === current user id
-    // userId === id of user who's photos we want to see
-    // if no userId, getPhotos will set it to 'null' and it will get ALL photos
     const { id } = req.user;
-    // const { page, userId } = req.query;
     const { page, searchType, value } = req.query;
 
     // get total number of photos

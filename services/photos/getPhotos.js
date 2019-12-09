@@ -16,11 +16,25 @@ module.exports = async (
 
   let getPhotosArgs = [limit, page * limit];
 
-  // change variables if we want to find photos of a certian user (might have user with id 0)
+  // change variables if user search
   if (searchType === "user") {
     getPhotosQueryStr = `SELECT * FROM photos 
       WHERE user_id = ? 
       ORDER BY created_at DESC 
+      LIMIT ? 
+      OFFSET ?`;
+    getPhotosArgs.unshift(value);
+  }
+
+  // change variables if tag search
+  if (searchType === "tag") {
+    getPhotosQueryStr = `SELECT * FROM photos
+      INNER JOIN photo_tags
+      ON photos.id = photo_tags.photo_id
+      INNER JOIN tags
+      ON photo_tags.tag_id = tags.id
+      WHERE tag_name = ? 
+      ORDER BY photos.created_at DESC 
       LIMIT ? 
       OFFSET ?`;
     getPhotosArgs.unshift(value);
