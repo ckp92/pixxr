@@ -19,13 +19,10 @@ class PhotoCard extends Component {
   };
 
   renderConfig = () => {
-    const {
-      auth: { id },
-      user_id
-    } = this.props;
+    const { auth, user_id, id } = this.props;
 
-    if (id === user_id) {
-      return <ConfigButtons />;
+    if (auth.id === user_id) {
+      return <ConfigButtons photoId={id} />;
     }
   };
 

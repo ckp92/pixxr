@@ -1,5 +1,7 @@
 import "../../styles/photos/PhotoCreate.css";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addPhoto } from "../../actions";
 import Shell from "../Shell";
 import PhotoForm from "./PhotoForm";
 
@@ -11,6 +13,11 @@ class PhotoCreate extends Component {
         <p>Fill this out to add a new photo!</p>
       </React.Fragment>
     );
+  };
+
+  onSubmitForm = formValues => {
+    const { addPhoto, history } = this.props;
+    addPhoto(formValues, history);
   };
 
   renderFooter = () => {
@@ -27,7 +34,7 @@ class PhotoCreate extends Component {
       <div className="photo-create">
         <Shell
           header={this.renderHeader()}
-          content={<PhotoForm />}
+          content={<PhotoForm onSubmit={this.onSubmitForm} />}
           footer={this.renderFooter()}
           type="form"
         />
@@ -36,4 +43,4 @@ class PhotoCreate extends Component {
   }
 }
 
-export default PhotoCreate;
+export default connect(null, { addPhoto })(PhotoCreate);

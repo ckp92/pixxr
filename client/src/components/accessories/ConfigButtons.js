@@ -1,30 +1,35 @@
 import "../../styles/accessories/ConfigButtons.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import ZoomButton from "./ZoomButton";
 
 class ConfigButtons extends Component {
-  renderIcon = () => {
-    const { haveILiked } = this.props;
+  onEditClick = e => {
+    const { photoId, history } = this.props;
 
-    return haveILiked ? "fas fa-heart red" : "far fa-heart";
+    e.stopPropagation();
+
+    history.push(`/photos/edit/${photoId}`);
   };
 
   render() {
     return (
       <div className="config-buttons">
         {" "}
-        <ZoomButton content={<i className="fas fa-pencil-alt" />} />
+        <ZoomButton
+          onClick={e => this.onEditClick(e)}
+          content={<i className="fas fa-pencil-alt" />}
+        />
         <ZoomButton content={<i className="far fa-trash-alt" />} />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ photos, auth }) => {
+// remove this if not necessary
+const mapStateToProps = ({ photos }) => {
   return { photos };
 };
 
-export default connect(mapStateToProps, {})(ConfigButtons);
-
-// add onlcick to icon btn
+export default connect(mapStateToProps, {})(withRouter(ConfigButtons));

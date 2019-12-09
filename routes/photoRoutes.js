@@ -5,6 +5,7 @@ const getPhotoMin = require("../services/photos/getPhotoMin");
 const getPhotoFull = require("../services/photos/getPhotoFull");
 const toggleLike = require("../services/photos/toggleLike");
 const addComment = require("../services/photos/addComment");
+const editPhoto = require("../services/photos/editPhoto");
 
 module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
@@ -79,6 +80,26 @@ module.exports = app => {
     // get new photo object
     const response = await getPhotoFull(photoId, id);
 
+    const { status, error, message, data } = response;
+
+    res.status(status).send({ error, message, data });
+  });
+
+  // EDIT PHOTO ROUTE ----------------------------------------------------------------------------------------
+  app.post("/api/photos/edit/:id", async (req, res) => {
+    const { id } = req.user;
+    const { photoOwnerId } = req.body;
+    const photoId = req.params.id;
+
+    if (photoOwnerId === id) {
+      // edit photo
+      await editPhoto(req.body, photoId);
+    } else {
+      console.error("User doesn't own photo");
+    }
+
+    // get new photo object
+    const response = await getPhotoFull(photoId, id);
     const { status, error, message, data } = response;
 
     res.status(status).send({ error, message, data });

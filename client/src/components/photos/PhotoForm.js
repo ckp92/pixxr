@@ -12,11 +12,7 @@ import GenericButton from "../GenericButton";
 class PhotoForm extends Component {
   // url, title, tags
   onFormSubmit = formValues => {
-    const { addPhoto, history } = this.props;
-
-    console.log("onFormSubmit Values: ", formValues);
-
-    addPhoto(formValues, history);
+    this.props.onSubmit(formValues);
   };
 
   renderForm = () => {

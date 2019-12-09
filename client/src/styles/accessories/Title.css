@@ -37,6 +37,11 @@
 }
 
 @media (max-width: 640px) {
+  #card-full-title h4,
+  #card-full-title .underline-button,
+  #card-full-title p {
+    font-size: 0.8rem;
+  }
   .title .underline-button:hover {
     text-decoration: none;
     font-weight: bolder;

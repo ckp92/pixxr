@@ -20,7 +20,8 @@ import {
   SET_PAGE,
   ADD_COMMENT,
   TOGGLE_SHOW_LIKES,
-  SET_SEARCH_TYPE
+  SET_SEARCH_TYPE,
+  EDIT_PHOTO
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -310,7 +311,7 @@ export const addPhoto = (values, history) => async dispatch => {
     };
   }
 
-  // make another reducer. if payload here is null (failure) reducer will render error modal
+  // make another check in. if payload here is null (failure) reducer will render error modal
   // on failure
   if (data.error || !data.data || (data.data && data.data.length !== 1)) {
     dispatch({ type: ADD_PHOTO, payload: null });
@@ -360,4 +361,36 @@ export const toggleShowLikes = value => {
 // set search type --------------------------------------------------------------------------------------------
 export const setSearchType = obj => {
   return { type: SET_SEARCH_TYPE, payload: obj };
+};
+
+// edit photo -------------------------------------------------------------------------------------------------
+export const editPhoto = (
+  formValues,
+  photoId,
+  photoOwnerId,
+  history
+) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ ...formValues, photoOwnerId })
+  };
+
+  try {
+    const res = await fetch(`/api/photos/edit/${photoId}`, options);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error editing the photo. Please try again",
+      data: null
+    };
+  }
+
+  dispatch({ type: EDIT_PHOTO, payload: data });
+
+  history.push(`/photos/${photoId}`);
 };
