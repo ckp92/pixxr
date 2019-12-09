@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import Title from "../accessories/Title";
 import LikesCounter from "../accessories/LikesCounter";
 import ConfigButtons from "../accessories/ConfigButtons";
-import UnderlineButton from "../accessories/UnderlineButton";
 
 class PhotoCard extends Component {
   onClick = () => {

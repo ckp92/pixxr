@@ -390,7 +390,11 @@ export const editPhoto = (
     };
   }
 
-  dispatch({ type: EDIT_PHOTO, payload: data });
-
-  history.push(`/photos/${photoId}`);
+  if (data.error || !data.data || (data.data && data.data.length !== 1)) {
+    dispatch({ type: EDIT_PHOTO, payload: null });
+    history.push("/");
+  } else {
+    dispatch({ type: EDIT_PHOTO, payload: data });
+    history.push(`/photos/${photoId}`);
+  }
 };

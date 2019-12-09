@@ -30,6 +30,7 @@
 .title p {
   margin: 0;
   margin-left: 10px;
+  text-align: right;
 }
 
 .title h4 {
