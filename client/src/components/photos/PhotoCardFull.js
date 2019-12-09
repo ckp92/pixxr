@@ -1,14 +1,23 @@
 import "../../styles/photos/PhotoCardFull.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toggleShowLikes } from "../../actions";
 import LikesCounter from "../accessories/LikesCounter";
 import Title from "../accessories/Title";
 import ConfigButtons from "../accessories/ConfigButtons";
 import UnderlineButton from "../accessories/UnderlineButton";
 import Comments from "../accessories/Comments";
 import CommentsForm from "../accessories/CommentsForm";
+import ShowLikesModal from "../accessories/ShowLikesModal";
 
 class PhotoCardFull extends Component {
+  renderLikesModal = () => {
+    const { showLikes, toggleShowLikes, likes } = this.props;
+
+    // header, content, actions, onDismiss, id
+    if (showLikes) return <ShowLikesModal />;
+  };
+
   renderConfig = () => {
     const {
       auth: { id },
@@ -55,6 +64,7 @@ class PhotoCardFull extends Component {
     } = this.props;
     return (
       <div className="photo-card-full">
+        {this.renderLikesModal()}
         <div className="card-full-top">
           <img src={image_url} alt={title} />
         </div>
@@ -83,8 +93,8 @@ class PhotoCardFull extends Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => {
-  return { auth };
+const mapStateToProps = ({ auth, showLikes }) => {
+  return { auth, showLikes };
 };
 
-export default connect(mapStateToProps, {})(PhotoCardFull);
+export default connect(mapStateToProps, { toggleShowLikes })(PhotoCardFull);

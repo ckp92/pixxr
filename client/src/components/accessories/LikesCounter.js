@@ -1,11 +1,17 @@
 import "../../styles/accessories/LikesCounter.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toggleLike } from "../../actions";
+import { toggleLike, toggleShowLikes } from "../../actions";
 import ZoomButton from "./ZoomButton";
 import UnderlineButton from "./UnderlineButton";
 
 class LikesCounter extends Component {
+  componentWillUnmount = () => {
+    const { showLikes, toggleShowLikes } = this.props;
+    // turn off on unmount
+    if (showLikes) toggleShowLikes(false);
+  };
+
   onHeartClick = e => {
     e.stopPropagation();
     const { haveILiked, toggleLike, type, photoId } = this.props;
@@ -48,8 +54,14 @@ class LikesCounter extends Component {
       // 3+ likes
       if (likes.length > 2) str += "s";
 
-      return <UnderlineButton content={str} />;
+      return <UnderlineButton onClick={this.onLikesClick} content={str} />;
     }
+  };
+
+  onLikesClick = () => {
+    const { showLikes, toggleShowLikes } = this.props;
+
+    if (!showLikes) toggleShowLikes(true);
   };
 
   render() {
@@ -65,10 +77,12 @@ class LikesCounter extends Component {
   }
 }
 
-const mapStateToProps = ({ photos }) => {
-  return { photos };
+const mapStateToProps = ({ photos, showLikes }) => {
+  return { photos, showLikes };
 };
 
-export default connect(mapStateToProps, { toggleLike })(LikesCounter);
+export default connect(mapStateToProps, { toggleLike, toggleShowLikes })(
+  LikesCounter
+);
 
 // add onlcick to icon btn

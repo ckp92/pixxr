@@ -37,3 +37,5 @@ export const TOGGLE_LIKE = "TOGGLE_LIKE";
 export const SET_PAGE = "SET_PAGE";
 
 export const ADD_COMMENT = "ADD_COMMENT";
+
+export const TOGGLE_SHOW_LIKES = "TOGGLE_SHOW_LIKES";

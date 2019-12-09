@@ -18,7 +18,8 @@ import {
   TOGGLE_LIKE,
   ADD_PHOTO,
   SET_PAGE,
-  ADD_COMMENT
+  ADD_COMMENT,
+  TOGGLE_SHOW_LIKES
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -343,4 +344,9 @@ export const addComment = values => async dispatch => {
   }
 
   dispatch({ type: ADD_COMMENT, payload: data });
+};
+
+// toggle show likes modal ------------------------------------------------------------------------------------
+export const toggleShowLikes = value => {
+  return { type: TOGGLE_SHOW_LIKES, payload: value };
 };

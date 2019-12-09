@@ -1,0 +1,16 @@
+.likes-list {
+  margin: 20px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#show-likes-modal .modal-actions {
+  display: flex;
+  justify-content: center;
+}
+
+#close-show-likes {
+  height: 30px;
+}
