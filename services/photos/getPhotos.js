@@ -55,13 +55,13 @@ module.exports = async (
     };
   });
 
+  // for tag search, change id to photo_id (as opposed to tag_id)
+  if (searchType === "tag") rows.forEach(row => (row.id = row.photo_id));
+
   // get the various properties for each
   const data = await Promise.all(
     rows.map(async row => await getMinProperties(row, currentUserId))
   );
-
-  // for tag search, change id to photo_id (as opposed to tag_id)
-  if (searchType === "tag") data.forEach(row => (row.id = row.photo_id));
 
   // return obj depending on whether we managed to get photos from db
   if (data.length) {
