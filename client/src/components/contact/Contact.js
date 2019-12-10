@@ -44,7 +44,7 @@ class Contact extends Component {
       <p>
         Alternatively you can send an email to{" "}
         <a
-          href="mailto:cpatel818@gmail.com?Subject=RE:%20Hidden%20Album"
+          href="mailto:cpatel818@gmail.com?Subject=RE:%20PIXXR"
           target="_blank"
           rel="noopener noreferrer"
         >

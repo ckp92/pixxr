@@ -110,7 +110,7 @@ class Header extends Component {
                 id="brand-link"
                 onClick={this.onBrandClick}
               >
-                Hidden Album
+                <strong>PIXXR</strong>
                 <i className="fas fa-chevron-circle-down fa-xs" />
               </button>
               {/* Brand Dropdown */}

@@ -14,7 +14,7 @@ module.exports = app => {
       // use 'PROD' or 'DEV' accordingly
       let str = `${process.env.NODE_ENV === "production" ? "PROD" : "DEV"}`;
       // add app identifier
-      str += "-HIDDEN-ALBUM-MESSAGE";
+      str += "-PIXXR-MESSAGE";
 
       return str;
     };

@@ -60,7 +60,7 @@ class Landing extends Component {
     return (
       <div className="landing-container">
         <div className="landing">
-          <h2>Hidden Album</h2>
+          <h2>PIXXR</h2>
           {this.renderButtons()}
           <div className="landing-form">{this.renderLandingForm()}</div>
           <div className="external-login-options">

@@ -19,7 +19,7 @@ export const BRAND_DROPDOWN_OPTIONS = [
   },
   {
     type: "a",
-    path: "https://github.com/ckp92/hidden-album",
+    path: "https://github.com/ckp92/pixxr",
     icon: "fab fa-github-square fa-sm",
     content: "GitHub"
   },
