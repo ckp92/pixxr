@@ -51,7 +51,15 @@ class PhotoDelete extends Component {
     const { title } = this.props.photos.data[0];
 
     if (isOwner) {
-      return <p>Are you sure you want to delete this photo?</p>;
+      if (title) {
+        return (
+          <p>
+            Are you sure you want to delete: <strong>{title}</strong>?
+          </p>
+        );
+      } else {
+        return <p>Are you sure you want to delete this photo?</p>;
+      }
     } else {
       return <p>Oops - You can only delete your own photos!</p>;
     }
