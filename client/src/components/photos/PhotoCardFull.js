@@ -2,7 +2,12 @@ import "../../styles/photos/PhotoCardFull.css";
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { toggleShowLikes, setSearchType } from "../../actions";
+import {
+  toggleShowLikes,
+  setSearchType,
+  getPhotos,
+  setPage
+} from "../../actions";
 import LikesCounter from "../accessories/LikesCounter";
 import Title from "../accessories/Title";
 import ConfigButtons from "../accessories/ConfigButtons";
@@ -14,14 +19,14 @@ import ShowLikesModal from "../accessories/ShowLikesModal";
 class PhotoCardFull extends Component {
   renderLikesModal = () => {
     const { showLikes } = this.props;
-
-    // header, content, actions, onDismiss, id
+    // will be truthy when user clicks it
     if (showLikes) return <ShowLikesModal />;
   };
 
   renderConfig = () => {
     const { auth, user_id, id } = this.props;
 
+    // only if user owns photo
     if (auth.id === user_id) {
       return <ConfigButtons photoId={id} />;
     }
@@ -42,10 +47,13 @@ class PhotoCardFull extends Component {
   };
 
   onTagClick = (e, tag) => {
-    const { setSearchType, history } = this.props;
+    const { setSearchType, history, setPage, getPhotos } = this.props;
     e.stopPropagation();
 
+    // set state so it's correct for when we push to tags route
     setSearchType({ searchType: "tag", value: tag, str: tag });
+    setPage(0);
+    getPhotos(0, "tag", tag);
     history.push(`/tag/${tag}/photos`);
   };
 
@@ -107,6 +115,9 @@ const mapStateToProps = ({ auth, showLikes }) => {
   return { auth, showLikes };
 };
 
-export default connect(mapStateToProps, { toggleShowLikes, setSearchType })(
-  withRouter(PhotoCardFull)
-);
+export default connect(mapStateToProps, {
+  toggleShowLikes,
+  setSearchType,
+  getPhotos,
+  setPage
+})(withRouter(PhotoCardFull));

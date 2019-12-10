@@ -16,7 +16,7 @@ module.exports = async (searchType = null, value = null) => {
   }
 
   // tag search
-  if (searchType === "tags") {
+  if (searchType === "tag") {
     countStr += ` INNER JOIN photo_tags
       ON photos.id = photo_tags.photo_id
       INNER JOIN tags

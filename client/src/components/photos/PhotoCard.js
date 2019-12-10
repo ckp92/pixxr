@@ -7,16 +7,14 @@ import LikesCounter from "../accessories/LikesCounter";
 import ConfigButtons from "../accessories/ConfigButtons";
 
 class PhotoCard extends Component {
+  // go to that photo
   onClick = () => {
     const { history, id } = this.props;
 
     history.push(`/photos/${id}`);
   };
 
-  onUsernameClick = e => {
-    e.stopPropagation();
-  };
-
+  // only show if user owns photo
   renderConfig = () => {
     const { auth, user_id, id } = this.props;
 

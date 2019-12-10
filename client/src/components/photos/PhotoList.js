@@ -8,17 +8,6 @@ import PhotoCard from "./PhotoCard";
 import Pagination from "../accessories/Pagination";
 
 class PhotoList extends Component {
-  componentDidMount = () => {
-    const {
-      getPhotos,
-      setPage,
-      searchType: { searchType, value }
-    } = this.props;
-
-    getPhotos(0, searchType, value);
-    setPage(0);
-  };
-
   renderContent = () => {
     // loading
     if (!this.props.photos) return <p>Loading...</p>;
@@ -34,8 +23,8 @@ class PhotoList extends Component {
     if (error || !data.length) return <p>Oops! {message}</p>;
 
     // success
-    return data.map(photo => (
-      <PhotoCard key={photo.id} {...photo} type="multi" />
+    return data.map((photo, i) => (
+      <PhotoCard key={i} {...photo} type="multi" />
     ));
   };
 

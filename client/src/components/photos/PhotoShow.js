@@ -1,7 +1,7 @@
 import "../../styles/photos/PhotoShow.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPhoto } from "../../actions";
+import { getPhoto, getPhotos } from "../../actions";
 import Shell from "../Shell";
 import PhotoCardFull from "./PhotoCardFull";
 import GenericButton from "../GenericButton";
@@ -40,16 +40,34 @@ class PhotoShow extends Component {
   };
 
   renderFooter = () => {
-    const { history } = this.props;
     return (
       <div className="back-to-photos">
         <GenericButton
           color="generic"
           text="Back to Photos"
-          onButtonClick={() => history.push("/")}
+          onButtonClick={this.onBackButtonClick}
         />
       </div>
     );
+  };
+
+  onBackButtonClick = () => {
+    const {
+      history,
+      getPhotos,
+      currentPage,
+      searchType: { searchType, value }
+    } = this.props;
+
+    // update state with correct photos
+    getPhotos(currentPage, searchType, value);
+
+    // redirect to correct place
+    if (!searchType) {
+      history.push("/photos");
+    } else {
+      history.push(`/${searchType}/${value}/photos`);
+    }
   };
 
   render() {
@@ -66,8 +84,8 @@ class PhotoShow extends Component {
   }
 }
 
-const mapStateToProps = ({ photos }) => {
-  return { photos };
+const mapStateToProps = ({ photos, searchType, currentPage }) => {
+  return { photos, searchType, currentPage };
 };
 
-export default connect(mapStateToProps, { getPhoto })(PhotoShow);
+export default connect(mapStateToProps, { getPhoto, getPhotos })(PhotoShow);

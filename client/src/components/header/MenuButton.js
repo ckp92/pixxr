@@ -53,6 +53,7 @@ class MenuButton extends Component {
       auth: { id, username }
     } = this.props;
 
+    // all photos
     if (path === "photos") {
       setSearchType({ searchType: null, value: null, str: null });
       getPhotos(0, null, null);
@@ -60,6 +61,7 @@ class MenuButton extends Component {
       history.push("/photos");
     }
 
+    // my photos
     if (path === "user") {
       setSearchType({ searchType: "user", value: id, str: username });
       getPhotos(0, "user", id);

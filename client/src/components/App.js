@@ -2,7 +2,7 @@ import "../styles/App.css";
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { getUser } from "../actions";
+import { getUser, getPhotos, setPage } from "../actions";
 
 import Header from "./header/Header";
 import Landing from "./landing/Landing";
@@ -20,7 +20,17 @@ import PhotoSearchTag from "./photos/PhotoSearchTag";
 
 class App extends Component {
   componentDidMount = () => {
-    this.props.getUser();
+    const {
+      getUser,
+      getPhotos,
+      setPage,
+      searchType: { searchType, value }
+    } = this.props;
+
+    // set state so it's correct for initial mount
+    getUser();
+    getPhotos(0, searchType, value);
+    setPage(0);
   };
 
   // don't render header if landing is on
@@ -82,8 +92,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ landingOn, auth }) => {
-  return { landingOn, auth };
+const mapStateToProps = ({ landingOn, auth, searchType }) => {
+  return { landingOn, auth, searchType };
 };
 
-export default connect(mapStateToProps, { getUser })(App);
+export default connect(mapStateToProps, { getUser, getPhotos, setPage })(App);

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { addPhoto } from "../../actions";
+import { addPhoto, getPhotos } from "../../actions";
 import validateTags from "../../utils/validateTags";
 import formFields from "./formFields";
 import FormField from "../FormField";
@@ -22,10 +22,23 @@ class PhotoForm extends Component {
   };
 
   // change to link?
-  onClickBack = formValues => {
-    const { history } = this.props;
-    console.log("onClickBack values", formValues);
-    history.push("/photos");
+  onClickBack = () => {
+    const {
+      history,
+      getPhotos,
+      currentPage,
+      searchType: { searchType, value }
+    } = this.props;
+
+    // update state with correct photos
+    getPhotos(currentPage, searchType, value);
+
+    // redirect to correct place
+    if (!searchType) {
+      history.push("/photos");
+    } else {
+      history.push(`/${searchType}/${value}/photos`);
+    }
   };
 
   render() {
@@ -76,6 +89,12 @@ const validate = formValues => {
   return errors;
 };
 
-const connected = connect(null, { addPhoto })(withRouter(PhotoForm));
+const mapStateToProps = ({ searchType, currentPage }) => {
+  return { searchType, currentPage };
+};
+
+const connected = connect(mapStateToProps, { addPhoto, getPhotos })(
+  withRouter(PhotoForm)
+);
 
 export default reduxForm({ form: "photoForm", validate })(connected);
