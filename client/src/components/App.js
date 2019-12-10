@@ -20,17 +20,9 @@ import PhotoSearchTag from "./photos/PhotoSearchTag";
 
 class App extends Component {
   componentDidMount = () => {
-    const {
-      getUser,
-      getPhotos,
-      setPage,
-      searchType: { searchType, value }
-    } = this.props;
+    const { getUser } = this.props;
 
-    // set state so it's correct for initial mount
     getUser();
-    getPhotos(0, searchType, value);
-    setPage(0);
   };
 
   // don't render header if landing is on

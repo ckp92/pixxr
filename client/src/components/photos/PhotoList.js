@@ -1,13 +1,24 @@
 import "../../styles/photos/PhotoList.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPhotos, setPage } from "../../actions/index";
+import { getPhotos } from "../../actions/index";
 import Shell from "../Shell";
 import ListHeader from "../accessories/ListHeader";
 import PhotoCard from "./PhotoCard";
 import Pagination from "../accessories/Pagination";
 
 class PhotoList extends Component {
+  componentDidMount = () => {
+    const {
+      getPhotos,
+      currentPage,
+      searchType: { searchType, value }
+    } = this.props;
+
+    // set state so it's correct for initial mount
+    getPhotos(currentPage, searchType, value);
+  };
+
   renderContent = () => {
     // loading
     if (!this.props.photos) return <p>Loading...</p>;
@@ -54,4 +65,4 @@ const mapStateToProps = ({ photos, currentPage, searchType }) => {
   return { photos, currentPage, searchType };
 };
 
-export default connect(mapStateToProps, { getPhotos, setPage })(PhotoList);
+export default connect(mapStateToProps, { getPhotos })(PhotoList);
