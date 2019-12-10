@@ -43,9 +43,6 @@ class App extends Component {
     const { auth } = this.props;
 
     if (auth && auth.id) {
-      // force user to make username
-      if (!auth.username) return;
-
       return (
         // these components are only visible if logged in
         <div>
