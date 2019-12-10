@@ -53,7 +53,7 @@ class PhotoDelete extends Component {
     if (isOwner) {
       return <p>Are you sure you want to delete this photo?</p>;
     } else {
-      return <p>Oops - You can only delete photos your own photos!</p>;
+      return <p>Oops - You can only delete your own photos!</p>;
     }
   };
 
