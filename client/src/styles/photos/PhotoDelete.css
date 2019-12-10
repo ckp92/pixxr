@@ -1,0 +1,17 @@
+#delete-modal {
+  height: 100vh;
+}
+
+#delete-modal .modal-content {
+  display: flex;
+  justify-content: center;
+}
+
+#delete-modal .modal-actions .actions-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+#delete-modal .generic-button {
+  height: 30px;
+}

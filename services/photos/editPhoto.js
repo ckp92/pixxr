@@ -1,6 +1,7 @@
 const usePooledConnection = require("../mysql/usePooledConnection");
 const generalQuery = require("../mysql/generalQuery");
 const addTags = require("./addTags");
+const deleteTags = require("./deleteTags");
 
 module.exports = async (reqBody, photoId) => {
   const { imgUrl, imgTitle, imgTags } = reqBody;
@@ -26,19 +27,7 @@ module.exports = async (reqBody, photoId) => {
   console.log("UPDATE OK PACKET: ", updateOkPacket);
 
   // delete all tags for that photo
-  const deleteTagsStr = `DELETE FROM photo_tags
-    WHERE photo_id = ?`;
-
-  const deleteOkPacket = await usePooledConnection(
-    generalQuery,
-    deleteTagsStr,
-    [photoId]
-  ).catch(error => {
-    console.error(error);
-    return;
-  });
-
-  console.log("DELETE OK PACKET: ", deleteOkPacket);
+  await deleteTags(photoId);
 
   // add tags back
   await addTags(imgTags, photoId);

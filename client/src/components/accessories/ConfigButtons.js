@@ -13,6 +13,14 @@ class ConfigButtons extends Component {
     history.push(`/photos/edit/${photoId}`);
   };
 
+  onDeleteClick = e => {
+    const { photoId, history } = this.props;
+
+    e.stopPropagation();
+
+    history.push(`/photos/delete/${photoId}`);
+  };
+
   render() {
     return (
       <div className="config-buttons">
@@ -21,7 +29,10 @@ class ConfigButtons extends Component {
           onClick={e => this.onEditClick(e)}
           content={<i className="fas fa-pencil-alt" />}
         />
-        <ZoomButton content={<i className="far fa-trash-alt" />} />
+        <ZoomButton
+          onClick={e => this.onDeleteClick(e)}
+          content={<i className="far fa-trash-alt" />}
+        />
       </div>
     );
   }

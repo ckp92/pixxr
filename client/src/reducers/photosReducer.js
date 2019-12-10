@@ -4,7 +4,8 @@ import {
   GET_PHOTO,
   TOGGLE_LIKE,
   ADD_COMMENT,
-  EDIT_PHOTO
+  EDIT_PHOTO,
+  DELETE_PHOTO
 } from "../actions/types";
 
 export default (state = null, action) => {
@@ -17,6 +18,7 @@ export default (state = null, action) => {
       return returnToggleLike({ ...state }, action.payload);
     case EDIT_PHOTO:
     case ADD_PHOTO:
+    case DELETE_PHOTO:
       return action.payload ? action.payload : state;
     default:
       return state;

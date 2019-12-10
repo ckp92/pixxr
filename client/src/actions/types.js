@@ -43,3 +43,5 @@ export const TOGGLE_SHOW_LIKES = "TOGGLE_SHOW_LIKES";
 export const SET_SEARCH_TYPE = "SET_SEARCH_TYPE";
 
 export const EDIT_PHOTO = "EDIT_PHOTO";
+
+export const DELETE_PHOTO = "DELETE_PHOTO";

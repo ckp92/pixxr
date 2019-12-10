@@ -12,7 +12,6 @@ import Modal from "../Modal";
 import UnderlineButton from "./UnderlineButton";
 import GenericButton from "../GenericButton";
 
-// header, content, actions, onDismiss, id
 class ShowLikesModal extends Component {
   renderContent = () => {
     const { likes } = this.props.photos.data[0];

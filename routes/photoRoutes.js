@@ -6,6 +6,7 @@ const getPhotoFull = require("../services/photos/getPhotoFull");
 const toggleLike = require("../services/photos/toggleLike");
 const addComment = require("../services/photos/addComment");
 const editPhoto = require("../services/photos/editPhoto");
+const deletePhoto = require("../services/photos/deletePhoto");
 
 module.exports = app => {
   // SHOW PHOTOS ROUTE ----------------------------------------------------------------------------------------
@@ -91,6 +92,7 @@ module.exports = app => {
     const { photoOwnerId } = req.body;
     const photoId = req.params.id;
 
+    // only edit if current user owns photo
     if (photoOwnerId === id) {
       // edit photo
       await editPhoto(req.body, photoId);
@@ -103,5 +105,28 @@ module.exports = app => {
     const { status, error, message, data } = response;
 
     res.status(status).send({ error, message, data });
+  });
+
+  // DELETE PHOTO ROUTE --------------------------------------------------------------------------------------
+  app.post("/api/photos/delete/:id", async (req, res) => {
+    const { id } = req.user;
+    const { photoOwnerId, page, searchType, value } = req.body;
+    const photoId = req.params.id;
+
+    // only delete if current user owns the photo
+    if (photoOwnerId === id) {
+      await deletePhoto(photoId);
+    } else {
+      console.error("User doesn't own photo");
+    }
+
+    // get total number of photos
+    const total = await countPhotos(searchType, value);
+
+    // getPhotos because we'll redirect to a listing
+    const response = await getPhotos(page, id, searchType, value);
+    const { status, error, message, data } = response;
+
+    res.status(status).send({ error, message, total, data });
   });
 };

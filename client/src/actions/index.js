@@ -21,7 +21,8 @@ import {
   ADD_COMMENT,
   TOGGLE_SHOW_LIKES,
   SET_SEARCH_TYPE,
-  EDIT_PHOTO
+  EDIT_PHOTO,
+  DELETE_PHOTO
 } from "./types";
 
 import alphanumericTest from "../utils/alphanumericTest";
@@ -396,5 +397,47 @@ export const editPhoto = (
   } else {
     dispatch({ type: EDIT_PHOTO, payload: data });
     history.push(`/photos/${photoId}`);
+  }
+};
+
+// delete photo ----------------------------------------------------------------------------------------------
+export const deletePhoto = (
+  photoId,
+  photoOwnerId,
+  page,
+  searchType,
+  value,
+  history
+) => async dispatch => {
+  let data = null;
+
+  const options = {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ page, photoOwnerId, searchType, value })
+  };
+
+  try {
+    const res = await fetch(`/api/photos/delete/${photoId}`, options);
+    data = await res.json();
+  } catch (error) {
+    console.error(error);
+    data = {
+      error,
+      message: "There was an error deleting the photo. Please try again",
+      data: null
+    };
+  }
+
+  console.log(data);
+
+  if (data.error || !data.data || (data.data && !data.data.length)) data = null;
+
+  dispatch({ type: DELETE_PHOTO, payload: data });
+
+  if (!searchType) {
+    history.push("/photos");
+  } else {
+    history.push(`/${searchType}/${value}/photos`);
   }
 };
