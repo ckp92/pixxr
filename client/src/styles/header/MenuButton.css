@@ -12,10 +12,13 @@
 @media (max-width: 640px) {
   .menu-link {
     height: 45px;
+    width: 100%;
+    font-size: 0.9rem;
   }
 }
 @media (max-height: 560px) {
   .menu-link {
     height: 40px;
+    font-size: 0.8rem;
   }
 }
