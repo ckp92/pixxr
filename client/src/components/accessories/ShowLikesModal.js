@@ -2,7 +2,12 @@ import "../../styles/accessories/ShowLikesModal.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { toggleShowLikes, setSearchType } from "../../actions";
+import {
+  toggleShowLikes,
+  setSearchType,
+  getPhotos,
+  setPage
+} from "../../actions";
 import Modal from "../Modal";
 import UnderlineButton from "./UnderlineButton";
 import GenericButton from "../GenericButton";
@@ -25,10 +30,12 @@ class ShowLikesModal extends Component {
   };
 
   onUsernameClick = (e, likeUserId, username) => {
-    const { setSearchType, history } = this.props;
+    const { setSearchType, history, getPhotos, setPage } = this.props;
     e.stopPropagation();
 
     setSearchType({ searchType: "user", value: likeUserId, str: username });
+    setPage(0);
+    getPhotos(0, "user", likeUserId);
     history.push(`/user/${likeUserId}/photos`);
   };
 
@@ -61,6 +68,9 @@ const mapStateToProps = ({ photos }) => {
   return { photos };
 };
 
-export default connect(mapStateToProps, { toggleShowLikes, setSearchType })(
-  withRouter(ShowLikesModal)
-);
+export default connect(mapStateToProps, {
+  toggleShowLikes,
+  setSearchType,
+  getPhotos,
+  setPage
+})(withRouter(ShowLikesModal));
