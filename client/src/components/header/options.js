@@ -18,8 +18,8 @@ export const BRAND_DROPDOWN_OPTIONS = [
     content: "Portfolio"
   },
   {
-    type: "a",
-    path: "https://github.com/ckp92/pixxr",
+    type: "link",
+    path: "/github",
     icon: "fab fa-github-square fa-sm",
     content: "GitHub"
   },

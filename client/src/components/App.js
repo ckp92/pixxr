@@ -8,6 +8,7 @@ import Header from "./header/Header";
 import Landing from "./landing/Landing";
 import Docs from "./docs/Docs";
 import CV from "./cv/CV";
+import GitHub from "./GitHub/GitHub";
 import Contact from "./contact/Contact";
 
 import PhotoCreate from "./photos/PhotoCreate";
@@ -57,6 +58,7 @@ class App extends Component {
             {/* OTHER ROUTES */}
             <Route path="/docs" exact component={Docs} />
             <Route path="/cv" exact component={CV} />
+            <Route path="/github" exact component={GitHub} />
             <Route path="/contact" exact component={Contact} />
           </Switch>
         </div>

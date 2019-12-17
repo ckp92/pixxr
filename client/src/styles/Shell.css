@@ -21,18 +21,15 @@
 }
 
 .shell-content-full {
-  /* border: 1px solid black; */
   width: 100%;
   margin-bottom: 20px;
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .shell-content-form {
-  /* border: 1px solid black; */
   width: 50%;
   margin-bottom: 20px;
   display: flex;
