@@ -11,12 +11,12 @@ export const BRAND_DROPDOWN_OPTIONS = [
     icon: "fas fa-file-alt fa-sm",
     content: "CV"
   },
-  {
-    type: "link",
-    path: "/",
-    icon: "fas fa-folder fa-sm",
-    content: "Portfolio"
-  },
+  // {
+  //   type: "link",
+  //   path: "/",
+  //   icon: "fas fa-folder fa-sm",
+  //   content: "Portfolio"
+  // },
   {
     type: "link",
     path: "/github",
