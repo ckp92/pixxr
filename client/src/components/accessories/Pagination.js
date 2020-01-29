@@ -18,7 +18,7 @@ class Pagination extends Component {
     // no photos
     if (!total) return;
 
-    const photosPerPage = 5;
+    const photosPerPage = 10;
 
     // get total pages
     const numPages = Math.ceil(total / photosPerPage);

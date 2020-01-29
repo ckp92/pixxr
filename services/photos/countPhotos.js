@@ -31,8 +31,7 @@ module.exports = async (searchType = null, value = null) => {
     error => {
       console.error(error);
       // return enough for one page if can't count
-      // change to 20 after it's done
-      return 5;
+      return 10;
     }
   );
 

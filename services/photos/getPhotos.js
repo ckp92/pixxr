@@ -8,7 +8,7 @@ module.exports = async (
   searchType = null,
   value = null
 ) => {
-  const limit = 5;
+  const limit = 10;
   let getPhotosQueryStr = `SELECT * FROM photos 
     ORDER BY created_at DESC 
     LIMIT ? 
