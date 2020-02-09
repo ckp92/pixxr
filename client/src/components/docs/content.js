@@ -5,7 +5,7 @@ export default [
     heading: "General",
     list: [
       <div className="list-item">
-        PIXXR is an photo-sharing social media application, where users can add
+        PIXXR is a photo-sharing social media application, where users can add
         the URLs of photos they wish to share, they can Edit and Delete their
         own photo, and they can 'like' and comment on any photo.
       </div>,
@@ -21,7 +21,7 @@ export default [
       <div className="list-item">The front-end uses React and Redux</div>,
       <div className="list-item">The the back-end uses Nodejs and Express</div>,
       <div className="list-item">
-        This webapp uses MySQL as opposed to MongoDB because the data is
+        This web app uses MySQL as opposed to MongoDB because the data is
         relational.
       </div>
     ]
